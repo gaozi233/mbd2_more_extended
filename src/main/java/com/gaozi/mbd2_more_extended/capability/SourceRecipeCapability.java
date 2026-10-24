@@ -40,7 +40,7 @@ public class SourceRecipeCapability extends RecipeCapability<Integer> {
     @Override
     public Widget createPreviewWidget(Integer amount) {
         WidgetGroup group = new WidgetGroup(0, 0, 18, 18);
-        group.setBackground(ArsSourceTextures.preview());
+        group.setBackground(ArsSourceTextures.fill(18, 18));
         CornerNumberWidget number = new CornerNumberWidget(0, 0, 18, 18);
         number.setValue(amount);
         group.addWidget(number);
@@ -50,7 +50,7 @@ public class SourceRecipeCapability extends RecipeCapability<Integer> {
     @Override
     public Widget createXEITemplate() {
         WidgetGroup group = new WidgetGroup(0, 0, 50, 14);
-        group.setBackground(ArsSourceTextures.xei());
+        group.setBackground(ArsSourceTextures.fill(50, 14));
         TextTextureWidget text = new TextTextureWidget(4, 3, 42, 8, "0 S")
                 .textureStyle(texture -> texture.setDropShadow(true));
         group.addWidget(text);

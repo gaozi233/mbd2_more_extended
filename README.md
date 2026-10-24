@@ -25,11 +25,9 @@ It adds **no items, blocks or creative tabs** and extends multiblock behavior pu
     - `OUT`：仪式可以抽取，并每 10 tick 向 5 格内可接收目标推送
     - `BOTH`：类似魔源罐，可推入也可被抽取，不主动推送
   - 注册 `SourceManager` provider，随机器加载/卸载自动注册与注销
-  - 机器 UI：Ars manabar 金色边框 + 紫色填充 + `当前/容量`
 - **魔源配方能力 `ars_source`（整数）**
   - 配方输入消耗魔源，输出产出魔源
   - 配方处理器方向 **IN / OUT / BOTH**，支持槽位名与“是否唯一（distinct）”
-  - 配方预览与 JEI/EMI 查看器使用 Ars manabar 条头贴图 + 数量
 - **KubeJS 可选绑定**
   - `nbtCompare(key, operator, value)`
 
@@ -142,11 +140,9 @@ All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
     - `OUT`: rituals may drain it; it pushes to accepting targets within 5 blocks every 10 ticks
     - `BOTH`: behaves like a source jar — accepts pushes and can be drained, but does not push
   - Registers a `SourceManager` provider and cleans it up on machine unload
-  - Machine UI: Ars manabar border + purple fill + `current/capacity`
 - **`ars_source` recipe capability (integer)**
   - Recipe inputs consume source, outputs produce source
   - Recipe handler direction **IN / OUT / BOTH**, plus slot names and the distinct flag
-  - Recipe preview and JEI/EMI ingredient use the Ars manabar head texture with the amount
 - **Optional KubeJS binding**
   - `nbtCompare(key, operator, value)`
 

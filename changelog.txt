@@ -18,7 +18,7 @@ Ars Nouveau integration (optional)
 - Added the `ars_source` recipe capability (integer):
   - recipe inputs consume source, outputs produce source
   - IN / OUT / BOTH are supported via separate recipe handlers
-  - recipe preview and JEI/EMI ingredient use the Ars manabar head texture
+  - recipe preview and JEI/EMI ingredient use the plain purple mana texture
 
 Development
 - Ars Nouveau, GeckoLib and Curios are runtime-only dependencies for `runClient`.

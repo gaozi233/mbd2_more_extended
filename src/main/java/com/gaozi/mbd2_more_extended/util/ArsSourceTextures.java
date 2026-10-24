@@ -46,18 +46,8 @@ public final class ArsSourceTextures {
         return new ResourceTexture(MANA_BAR_BORDER, 0.0F, 0.0F, uv(BAR_WIDTH), uv(BAR_HEIGHT));
     }
 
-    /** 魔源填充纹理（从图集左上角截取 width x height）。 */
+    /** 魔源填充纹理（从图集左上角截取 width x height，纯紫色，无金色边框）。 */
     public static IGuiTexture fill(int width, int height) {
         return new ResourceTexture(MANA_BAR_FILL, 0.0F, 0.0F, uv(width), uv(height));
-    }
-
-    /** 18x18 配方预览用的条框（截取左侧条头）。 */
-    public static IGuiTexture preview() {
-        return new ResourceTexture(MANA_BAR_BORDER, uv(6), uv(6), uv(18), uv(18));
-    }
-
-    /** JEI/EMI 配方查看器里的 50x14 条框。 */
-    public static IGuiTexture xei() {
-        return new ResourceTexture(MANA_BAR_BORDER, uv(6), uv(6), uv(50), uv(14));
     }
 }
