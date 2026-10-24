@@ -1,0 +1,11 @@
+Credits
+=======
+
+- Multiblocked2 (KilaBash / Low-Drag-MC) - the multiblock machine API this mod extends.
+- LDLib (Low-Drag-MC) - GUI, synchronization and editor framework used by MBD2.
+- Ars Nouveau (Hollingsworth) - optional source (mana) integration and GUI textures.
+- KubeJS / Rhino / Architectury - optional scripting integration.
+- JEI - optional recipe viewer integration.
+- ProbeJS - development-time KubeJS typings tool.
+
+Thanks to the MBD2 and Ars Nouveau communities for documentation and examples.

@@ -1,0 +1,40 @@
+pluginManagement {
+    repositories {
+        // ------------------------------------------------------------------
+        // 国内镜像源：优先尝试，找不到时自动回落到下面的官方源。
+        // ------------------------------------------------------------------
+        // Maven Central 镜像（Gradle 插件及普通依赖使用）
+        maven {
+            name = 'AliyunPublic'
+            url = 'https://maven.aliyun.com/repository/public'
+        }
+        // Gradle Plugin Portal 镜像（ForgeGradle、foojay 等插件）
+        maven {
+            name = 'AliyunGradlePlugin'
+            url = 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+        // Forge maven 镜像（ForgeGradle 及其依赖，如 DiffPatch）
+        maven {
+            name = 'BMCLAPI-Forge'
+            url = 'https://bmclapi2.bangbang93.com/maven'
+            content {
+                includeGroupByRegex 'net\\.minecraftforge.*'
+                includeGroupByRegex 'cpw\\.mods.*'
+                includeGroupByRegex 'de\\.oceanlabs\\.mcp.*'
+            }
+        }
+
+        // ------------------------------------------------------------------
+        // 官方源（镜像缺失时回落到这里）
+        // ------------------------------------------------------------------
+        gradlePluginPortal()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
+}

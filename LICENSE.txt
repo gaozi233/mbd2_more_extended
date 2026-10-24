@@ -1,0 +1,6 @@
+MBD2 More Extended
+Copyright (c) 2026 gaozi. All Rights Reserved.
+
+This mod and its source code are provided as-is, without warranty of any kind.
+Redistribution of the compiled jar is permitted for personal use and modpacks.
+Redistribution of modified source code or assets requires permission from the author.

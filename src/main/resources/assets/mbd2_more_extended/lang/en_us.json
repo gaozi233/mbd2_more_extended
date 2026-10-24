@@ -1,0 +1,23 @@
+{
+  "recipe.condition.nbt_compare": "NBT compare",
+  "recipe.condition.nbt_compare.tooltip": "Machine custom data: %s %s %s",
+  "recipe.condition.nbt_compare.key": "NBT key",
+  "recipe.condition.nbt_compare.operator": "Operator",
+  "recipe.condition.nbt_compare.value": "Value",
+  "config.recipe.condition.nbt_compare.key.tooltip": "Key to read from the machine custom data",
+  "config.recipe.condition.nbt_compare.operator.tooltip": "Comparison operator (>=, >, <=, <, ==, !=)",
+  "config.recipe.condition.nbt_compare.value.tooltip": "Value the custom data entry is compared against",
+
+  "config.definition.trait.ars_source_storage.name": "Ars Nouveau - Source Storage",
+  "config.definition.trait.ars_source_storage.capacity": "Source Capacity",
+  "config.definition.trait.ars_source_storage.capacity.tooltip": "Maximum amount of source this machine can store.",
+  "config.definition.trait.ars_source_storage.transfer_rate": "Transfer Rate",
+  "config.definition.trait.ars_source_storage.transfer_rate.tooltip": "Maximum amount of source moved per transfer.",
+  "config.definition.trait.ars_source_storage.io": "Ars I/O Mode",
+  "config.definition.trait.ars_source_storage.io.tooltip": "IN: only receive source. OUT: only output source (rituals can take, and it pushes to nearby targets). BOTH: like a source jar, accepts and can be drained, no active push.",
+  "config.definition.trait.ars_source_storage.ui_hover": "Source: %s / %s",
+
+  "recipe.capability.ars_source.name": "Source",
+  "recipe.capability.ars_source.amount": "Source Amount",
+  "recipe.capability.ars_source.error": "Requires %s source"
+}

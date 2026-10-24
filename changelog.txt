@@ -1,0 +1,32 @@
+MBD2 More Extended 1.0.0
+=======================
+
+- Removed the optional JEI dependency declaration. The recipe viewer integration comes from
+  MBD2/LDLib, so the mod does not reject older JEI versions (e.g. 15.20.0.133).
+
+Recipe conditions
+- Added the `nbt_compare` recipe condition for MBD2:
+  reads a top-level key from the machine's custom data and compares its numeric value.
+  Supports >=, >, <=, <, ==, !=, JSON/network/NBT serialization and the KubeJS `nbtCompare(...)` binding.
+
+Ars Nouveau integration (optional)
+- Added the `ars_source_storage` machine trait:
+  - Ars I/O mode IN / OUT / BOTH (no per-face configuration)
+  - recipe handler direction IN / OUT / BOTH, slot names and distinct flag
+  - source storage persisted and synced, with an Ars manabar UI
+  - Ars SourceManager provider: sourcelinks fill it, rituals can drain it, OUT pushes to nearby targets
+- Added the `ars_source` recipe capability (integer):
+  - recipe inputs consume source, outputs produce source
+  - IN / OUT / BOTH are supported via separate recipe handlers
+  - recipe preview and JEI/EMI ingredient use the Ars manabar head texture
+
+Development
+- Ars Nouveau, GeckoLib and Curios are runtime-only dependencies for `runClient`.
+- China-friendly Maven mirrors and ForgeGradle network workarounds.
+- README documents setup, usage and known limitations.
+
+Requirements
+- Minecraft 1.20.1, Forge 47.4.10
+- Multiblocked2 1.0.37+ (required)
+- Ars Nouveau 4.12+ (optional, for the source integration)
+- KubeJS 2001.6.5+ (optional, for the `nbtCompare` binding)

@@ -1,0 +1,351 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+minecraft {
+    // The mappings can be changed at any time and must be in the following format.
+    // Channel:   Version:
+    // official   MCVersion             Official field/method names from Mojang mapping files
+    // parchment  YYYY.MM.DD-MCVersion  Open community-sourced parameter names and javadocs layered on top of official
+    //
+    // You must be aware of the Mojang license when using the 'official' or 'parchment' mappings.
+    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
+    //
+    // Parchment is an unofficial project maintained by ParchmentMC, separate from MinecraftForge
+    // Additional setup is needed to use their mappings: https://parchmentmc.org/docs/getting-started
+    //
+    // Use non-default mappings at your own risk. They may not always work.
+    // Simply re-run your setup task after changing the mappings to update your workspace.
+    mappings channel: mapping_channel, version: mapping_version
+
+    // When true, this property will have all Eclipse/IntelliJ IDEA run configurations run the "prepareX" task for the given run configuration before launching the game.
+    // In most cases, it is not necessary to enable.
+    // enableEclipsePrepareRuns = true
+    // enableIdeaPrepareRuns = true
+
+    // This property allows configuring Gradle's ProcessResources task(s) to run on IDE output locations before launching the game.
+    // It is REQUIRED to be set to true for this template to function.
+    // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
+    copyIdeResources = true
+
+    // When true, this property will add the folder name of all declared run configurations to generated IDE run configurations.
+    // The folder name can be set on a run configuration using the "folderName" property.
+    // By default, the folder name of a run configuration is the name of the Gradle project containing it.
+    // generateRunFolders = true
+
+    // This property enables access transformers for use in development.
+    // They will be applied to the Minecraft artifact.
+    // The access transformer file can be anywhere in the project.
+    // However, it must be at "META-INF/accesstransformer.cfg" in the final mod jar to be loaded by Forge.
+    // This default location is a best practice to automatically put the file in the right place in the final jar.
+    // See https://docs.minecraftforge.net/en/latest/advanced/accesstransformers/ for more information.
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        // applies to all the run configs below
+        configureEach {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            // The markers can be added/remove as needed separated by commas.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            property 'forge.logging.console.level', 'debug'
+
+            // Dev 环境使用 official 映射，而模组里的 Mixin refmap 记录的是 SRG 名称，
+            // 需要让 Mixin 在运行时把 refmap 从 SRG 重映射到 official，
+            // 否则 Architectury（KubeJS 的前置）注入会直接崩客户端。
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${project.buildDir}/createSrgToMcp/output.srg"
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+
+        // This run config launches GameTestServer and runs all registered gametests, then exits.
+        // By default, the server will crash when no gametests are provided.
+        // The gametest system is also enabled by default for other run configs under the /test command.
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        data {
+            // example of overriding the workingDirectory set in configureEach above
+            workingDirectory project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
+}
+
+// Include resources generated by data generators.
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    // ------------------------------------------------------------------
+    // 国内镜像源：优先尝试，找不到时自动回落到下面的官方源。
+    // ------------------------------------------------------------------
+    // Maven Central 镜像
+    maven {
+        name = "AliyunPublic"
+        url = "https://maven.aliyun.com/repository/public"
+    }
+    // Forge maven 镜像（ForgeGradle / Forge / MCP 相关构件）
+    maven {
+        name = "BMCLAPI-Forge"
+        url = "https://bmclapi2.bangbang93.com/maven"
+        content {
+            includeGroupByRegex "net\\.minecraftforge.*"
+            includeGroupByRegex "cpw\\.mods.*"
+            includeGroupByRegex "de\\.oceanlabs\\.mcp.*"
+        }
+    }
+    // Mixin 只在 Sponge 的仓库里（Maven Central 没有 0.8.5），ForgeGradle 编译需要它。
+    maven {
+        name = "Sponge"
+        url = "https://repo.spongepowered.org/repository/maven-public"
+        content {
+            includeGroupByRegex "org\\.spongepowered.*"
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // 官方源
+    // ------------------------------------------------------------------
+    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
+    flatDir {
+        dir 'libs'
+    }
+    // 只用于 curse.maven 坐标，避免 Gradle 把 maven.modrinth 等请求也发到这里（很慢）。
+    maven {
+        name = "CurseMaven"
+        url = "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
+    // Multiblocked2 (MBD2) and LDLib are published on Modrinth's maven.
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+
+    // KubeJS and Rhino live on Latvian's maven.
+    maven {
+        name = "Latvian"
+        url = "https://maven.latvian.dev/releases"
+        content {
+            includeGroup "dev.latvian.mods"
+        }
+    }
+
+    // Architectury API is a mandatory prerequisite of KubeJS.
+    maven {
+        name = "Architectury"
+        url = "https://maven.architectury.dev"
+        content {
+            includeGroup "dev.architectury"
+        }
+    }
+}
+
+// ForgeGradle 在应用插件时就已经把官方 Forge maven 加进了仓库列表（而且排在我们前面），
+// 官方源在国内经常读超时，会导致解析 log4j、lwjgl 等依赖时卡住。
+// 这里把它改指向 BMCLAPI 镜像，并只让它处理 Forge/MCP 构件，避免它被问
+// com.mojang 这类 Minecraft 库时长时间等待。
+repositories.all { repo ->
+    if (repo instanceof org.gradle.api.artifacts.repositories.MavenArtifactRepository
+            && repo.url != null && repo.url.host == 'maven.minecraftforge.net') {
+        repo.setUrl('https://bmclapi2.bangbang93.com/maven')
+        repo.content {
+            includeGroupByRegex "net\\.minecraftforge.*"
+            includeGroupByRegex "cpw\\.mods.*"
+            includeGroupByRegex "de\\.oceanlabs\\.mcp.*"
+        }
+    }
+}
+
+// JEI is consumed as a local build, so make a missing jar fail with a clear message.
+def localJeiJar = file("libs/jei-${minecraft_version}-forge-${jei_version}.jar")
+if (!localJeiJar.exists()) {
+    throw new GradleException(
+            "Local JEI jar not found: ${localJeiJar}\n" +
+            "Download jei-${minecraft_version}-forge-${jei_version}.jar and put it into the libs/ directory.")
+}
+
+// ProbeJS is a local development-time tool (KubeJS typings), also checked here.
+def localProbejsJar = file("libs/probejs-${probejs_version}.jar")
+if (!localProbejsJar.exists()) {
+    throw new GradleException(
+            "Local ProbeJS jar not found: ${localProbejsJar}\n" +
+            "Download probejs-${probejs_version}.jar and put it into the libs/ directory.")
+}
+
+dependencies {
+    // Specify the version of Minecraft to use.
+    // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
+    // The "userdev" classifier will be requested and setup by ForgeGradle.
+    // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
+    // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // ---------------------------------------------------------------------
+    // Required prerequisite: Multiblocked2 1.0.37
+    // ---------------------------------------------------------------------
+    // The mod this addon is built on top of. Also present in the dev runtime
+    // so that runClient/runServer can load it.
+    implementation fg.deobf("maven.modrinth:multiblocked2:${mbd2_version}")
+
+    // LDLib is a mandatory prerequisite of MBD2 (mbd2 1.0.37 declares ldlib [1.0.40,)),
+    // so it is required for compiling against MBD2 and for launching the game.
+    implementation fg.deobf("maven.modrinth:ldlib:${ldlib_version}")
+
+    // ---------------------------------------------------------------------
+    // Optional prerequisite: KubeJS
+    // ---------------------------------------------------------------------
+    // Only used for the KubeJS integration. It is declared as an optional
+    // dependency in META-INF/mods.toml, so the built mod does not require it.
+    // Rhino and Architectury are KubeJS' own mandatory prerequisites.
+    implementation fg.deobf("dev.latvian.mods:kubejs-forge:${kubejs_version}")
+    implementation fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}")
+    implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
+
+    // ---------------------------------------------------------------------
+    // Optional prerequisite: Ars Nouveau
+    // ---------------------------------------------------------------------
+    // Compile-only so the trait code can reference Ars Nouveau's source API while
+    // the mod still loads without it. For in-dev testing put ars_nouveau +
+    // geckolib + curios into run/mods (or change this to runtimeOnly/implementation).
+    compileOnly fg.deobf("maven.modrinth:ars-nouveau:${ars_nouveau_version}")
+
+    // Dev runtime: load Ars Nouveau (and its mandatory dependencies) in runClient so
+    // the source trait is registered while testing. These are not required by the
+    // built mod and are not bundled into the jar.
+    runtimeOnly fg.deobf("maven.modrinth:ars-nouveau:${ars_nouveau_version}")
+    runtimeOnly fg.deobf("maven.modrinth:geckolib:${geckolib_version}")
+    runtimeOnly fg.deobf("maven.modrinth:curios:${curios_version}")
+
+    // ---------------------------------------------------------------------
+    // Local build: JEI
+    // ---------------------------------------------------------------------
+    // JEI is taken from the local jar in ./libs instead of a remote maven.
+    // The "blank" group is ignored: flatDir resolves the coordinate to
+    // libs/jei-<minecraft_version>-forge-<jei_version>.jar, and fg.deobf()
+    // remaps that jar from SRG to the development mappings.
+    implementation fg.deobf("blank:jei-${minecraft_version}-forge:${jei_version}")
+
+    // ---------------------------------------------------------------------
+    // Local dev tool: ProbeJS
+    // ---------------------------------------------------------------------
+    // ProbeJS is only needed while running the dev client (it dumps KubeJS typings
+    // with /probejs dump). runtimeOnly keeps it off the compile classpath and out
+    // of the built jar.
+    runtimeOnly fg.deobf("blank:probejs:${probejs_version}")
+}
+
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+// When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
+// See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+            forge_version: forge_version, forge_version_range: forge_version_range,
+            loader_version_range: loader_version_range,
+            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors: mod_authors, mod_description: mod_description,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+// Example for how to get properties into the manifest for reading at runtime.
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : mod_authors,
+                'Specification-Version'   : '1', // We are version 1 of ourselves
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_authors,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    // Ship the license, changelog and credits inside the jar.
+    from('LICENSE.txt') { into 'META-INF' }
+    from('changelog.txt') { into 'META-INF' }
+    from('CREDITS.txt') { into 'META-INF' }
+
+    // This is the preferred method to reobfuscate your jar file
+    finalizedBy 'reobfJar'
+}
+
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing:
+// tasks.named('publish').configure {
+//     dependsOn 'reobfJar'
+// }
+
+// Example configuration to allow publishing using the maven-publish plugin
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+

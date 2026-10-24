@@ -1,0 +1,23 @@
+{
+  "recipe.condition.nbt_compare": "NBT 数值比较",
+  "recipe.condition.nbt_compare.tooltip": "机器自定义数据：%s %s %s",
+  "recipe.condition.nbt_compare.key": "NBT 键",
+  "recipe.condition.nbt_compare.operator": "比较符",
+  "recipe.condition.nbt_compare.value": "比较值",
+  "config.recipe.condition.nbt_compare.key.tooltip": "要从机器 customData 中读取的键",
+  "config.recipe.condition.nbt_compare.operator.tooltip": "比较运算符（>=、>、<=、<、==、!=）",
+  "config.recipe.condition.nbt_compare.value.tooltip": "与该键的值进行比较的目标值",
+
+  "config.definition.trait.ars_source_storage.name": "新生魔艺 - 魔源存储",
+  "config.definition.trait.ars_source_storage.capacity": "魔源容量",
+  "config.definition.trait.ars_source_storage.capacity.tooltip": "这台机器最多能存储的魔源数量。",
+  "config.definition.trait.ars_source_storage.transfer_rate": "传输速率",
+  "config.definition.trait.ars_source_storage.transfer_rate.tooltip": "单次传输的最大魔源数量。",
+  "config.definition.trait.ars_source_storage.io": "Ars 交互方向",
+  "config.definition.trait.ars_source_storage.io.tooltip": "IN：只接收魔源；OUT：只输出魔源（仪式可抽取，并向附近目标推送）；BOTH：类似魔源罐，可接收也可被抽取，不主动推送。",
+  "config.definition.trait.ars_source_storage.ui_hover": "魔源：%s / %s",
+
+  "recipe.capability.ars_source.name": "魔源",
+  "recipe.capability.ars_source.amount": "魔源数量",
+  "recipe.capability.ars_source.error": "需要 %s 魔源"
+}
