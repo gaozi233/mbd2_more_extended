@@ -116,6 +116,7 @@ Ars Nouveau / GeckoLib / Curios 只是开发运行时的 `runtimeOnly` 依赖，
 ### 链接
 
 - 源码 / Issues：<https://github.com/gaozi233/mbd2_more_extended>
+- CurseForge：<https://www.curseforge.com/minecraft/mc-mods/mbd2-more-extended>
 - 更新日志：[changelog.txt](changelog.txt)
 - 致谢：[CREDITS.txt](CREDITS.txt)
 
@@ -232,6 +233,7 @@ Ars Nouveau / GeckoLib / Curios are `runtimeOnly` dev dependencies and are not b
 ### Links
 
 - Source / issues: <https://github.com/gaozi233/mbd2_more_extended>
+- CurseForge: <https://www.curseforge.com/minecraft/mc-mods/mbd2-more-extended>
 - Changelog: [changelog.txt](changelog.txt)
 - Credits: [CREDITS.txt](CREDITS.txt)
 
