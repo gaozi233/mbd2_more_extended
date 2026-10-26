@@ -13,5 +13,9 @@ public interface IBlockConditionDisplay {
 
     TagKey<Block>[] getDisplayTags();
 
+    int getDisplayMinCount();
+
+    int getDisplayMaxCount();
+
     Component getDisplayTooltip();
 }

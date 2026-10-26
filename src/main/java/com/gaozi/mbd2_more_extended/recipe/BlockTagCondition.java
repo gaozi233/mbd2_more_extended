@@ -115,6 +115,16 @@ public class BlockTagCondition extends RecipeCondition implements IBlockConditio
     }
 
     @Override
+    public int getDisplayMinCount() {
+        return minCount;
+    }
+
+    @Override
+    public int getDisplayMaxCount() {
+        return maxCount;
+    }
+
+    @Override
     public Component getDisplayTooltip() {
         return getTooltips();
     }

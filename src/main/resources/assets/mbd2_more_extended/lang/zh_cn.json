@@ -13,6 +13,7 @@
   "recipe.condition.block_ext.max_count": "最大数量",
   "recipe.condition.block_ext.blocks": "方块列表",
   "recipe.condition.block_ext.tags": "方块标签",
+  "recipe.condition.block.count_range": "数量范围：%s ~ %s",
   "config.recipe.condition.block_ext.min_count.tooltip": "多方块结构中匹配方块的最少数量",
   "config.recipe.condition.block_ext.max_count.tooltip": "多方块结构中匹配方块的最多数量",
   "config.recipe.condition.block_ext.blocks.tooltip": "逗号分隔的方块 ID；也支持 #标签 写法",

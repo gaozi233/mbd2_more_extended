@@ -13,6 +13,7 @@
   "recipe.condition.block_ext.max_count": "Max count",
   "recipe.condition.block_ext.blocks": "Blocks",
   "recipe.condition.block_ext.tags": "Block tags",
+  "recipe.condition.block.count_range": "Count: %s ~ %s",
   "config.recipe.condition.block_ext.min_count.tooltip": "Minimum number of matching blocks in the multiblock",
   "config.recipe.condition.block_ext.max_count.tooltip": "Maximum number of matching blocks in the multiblock",
   "config.recipe.condition.block_ext.blocks.tooltip": "Comma-separated block IDs; #tag entries are also accepted",

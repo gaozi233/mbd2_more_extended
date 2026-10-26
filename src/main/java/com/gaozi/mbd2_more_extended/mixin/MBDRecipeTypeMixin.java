@@ -13,6 +13,10 @@ import com.lowdragmc.mbd2.api.recipe.MBDRecipeType;
 import com.lowdragmc.mbd2.utils.WidgetUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -153,9 +157,20 @@ public class MBDRecipeTypeMixin {
 
         List<ItemStack> stacks = new ArrayList<>(items.size());
         for (Item item : items) {
-            stacks.add(new ItemStack(item));
+            stacks.add(mbd2$displayStack(item, display));
         }
         return stacks;
+    }
+
+    private static ItemStack mbd2$displayStack(Item item, IBlockConditionDisplay display) {
+        ItemStack stack = new ItemStack(item);
+        CompoundTag displayTag = stack.getOrCreateTagElement("display");
+        ListTag lore = new ListTag();
+        lore.add(StringTag.valueOf(Component.Serializer.toJson(
+                Component.translatable("recipe.condition.block.count_range",
+                        display.getDisplayMinCount(), display.getDisplayMaxCount()))));
+        displayTag.put("Lore", lore);
+        return stack;
     }
 
     private static void mbd2$addItem(LinkedHashSet<Item> items, Block block) {

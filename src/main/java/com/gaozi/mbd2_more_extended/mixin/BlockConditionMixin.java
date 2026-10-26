@@ -73,6 +73,16 @@ public abstract class BlockConditionMixin extends RecipeCondition implements IBl
     }
 
     @Override
+    public int getDisplayMinCount() {
+        return minCount;
+    }
+
+    @Override
+    public int getDisplayMaxCount() {
+        return maxCount;
+    }
+
+    @Override
     public Component getDisplayTooltip() {
         return getTooltips();
     }
