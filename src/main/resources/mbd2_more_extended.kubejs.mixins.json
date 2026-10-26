@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.gaozi.mbd2_more_extended.mixin.kubejs",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mbd2_more_extended.refmap.json",
+  "mixins": [
+    "MBDRecipeJSMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

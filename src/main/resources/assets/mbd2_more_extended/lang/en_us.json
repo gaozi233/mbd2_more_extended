@@ -17,6 +17,8 @@
   "config.recipe.condition.block_ext.max_count.tooltip": "Maximum number of matching blocks in the multiblock",
   "config.recipe.condition.block_ext.blocks.tooltip": "Comma-separated block IDs; #tag entries are also accepted",
   "config.recipe.condition.block_ext.tags.tooltip": "Comma-separated block tag IDs, e.g. forge:stone",
+  "config.recipe.condition.show_in_gui": "Show in condition description",
+  "config.recipe.condition.show_in_gui.tooltip": "Whether this condition is listed in the recipe GUI condition description",
 
   "config.definition.trait.ars_source_storage.name": "Ars Nouveau - Source Storage",
   "config.definition.trait.ars_source_storage.capacity": "Source Capacity",

@@ -22,6 +22,9 @@ It adds **no items, blocks or creative tabs** and extends multiblock behavior pu
   - 统计多方块结构里指定方块或方块标签的数量，判断是否在 `minCount ~ maxCount` 内
   - `blocks` 写方块 ID，`tags` 写标签 ID；`blocks` 里也支持 `#tag` 写法
   - 支持 JSON / 网络 / NBT，以及 KubeJS `blockExt(...)` 绑定
+- **条件描述显隐 `showInGui`**
+  - 所有 MBD2 配方条件（包括内置和其他模组注册的条件）都可控制是否出现在配方 GUI 的条件描述中
+  - 条件配置面板有开关；KJS 支持 `condition.showInGui(false)` 和链式 `.showInGui(false)`
 - **魔源存储特质 `ars_source_storage`（需要 Ars Nouveau）**
   - 容量、传输速率可配置，source 存档持久化并同步客户端
   - Ars 交互方向 **IN / OUT / BOTH**，不区分机器面
@@ -92,6 +95,12 @@ KubeJS 服务端脚本：
 
 ```js
 m.addCondition(blockExt(1, 8, ['minecraft:stone', '#forge:stone']))
+
+// 不显示在配方 GUI 的条件描述中
+m.addCondition(blockExt(1, 8, ['minecraft:stone']).showInGui(false))
+
+// 内置条件同样支持链式调用
+m.dimension('minecraft:overworld').showInGui(false)
 ```
 
 #### 3. 魔源特质
@@ -163,6 +172,9 @@ All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
   - Counts matching blocks or block tags in the multiblock structure between `minCount` and `maxCount`
   - `blocks` contains block IDs, `tags` contains tag IDs; `#tag` entries are also accepted in `blocks`
   - JSON / network / NBT serialization and the KubeJS `blockExt(...)` binding
+- **Condition description visibility `showInGui`**
+  - Every MBD2 recipe condition (built-in or registered by another mod) can hide itself from the recipe GUI condition description
+  - Toggle available in the condition editor; KubeJS supports `condition.showInGui(false)` and chained `.showInGui(false)`
 - **`ars_source_storage` trait (requires Ars Nouveau)**
   - Configurable capacity / transfer rate; source is persisted and synced
   - Ars I/O mode **IN / OUT / BOTH**, with no per-face configuration
@@ -233,6 +245,12 @@ KubeJS server script:
 
 ```js
 m.addCondition(blockExt(1, 8, ['minecraft:stone', '#forge:stone']))
+
+// Hide it from the recipe GUI condition description
+m.addCondition(blockExt(1, 8, ['minecraft:stone']).showInGui(false))
+
+// Built-in conditions support the same chained call
+m.dimension('minecraft:overworld').showInGui(false)
 ```
 
 #### 3. Source trait

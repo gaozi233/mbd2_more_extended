@@ -23,6 +23,14 @@ pluginManagement {
                 includeGroupByRegex 'de\\.oceanlabs\\.mcp.*'
             }
         }
+        // MixinGradle 插件
+        maven {
+            name = 'Sponge'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+            content {
+                includeGroupByRegex 'org\\.spongepowered.*'
+            }
+        }
 
         // ------------------------------------------------------------------
         // 官方源（镜像缺失时回落到这里）
