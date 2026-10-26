@@ -23,6 +23,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -104,25 +105,23 @@ public class BlockTagCondition extends RecipeCondition {
 
     @Override
     public Component getTooltips() {
-        String blockNames = Arrays.stream(blocks)
-                .map(block -> block.getName().getString())
-                .reduce((a, b) -> a + " || " + b)
-                .orElse("");
-        String tagNames = Arrays.stream(tags)
-                .map(tag -> "#" + tag.location())
-                .reduce((a, b) -> a + " || " + b)
-                .orElse("");
-        String range = minCount + " ~ " + maxCount;
-        if (!blockNames.isEmpty() && !tagNames.isEmpty()) {
-            return Component.literal(blockNames + " || " + tagNames + " [" + range + "]");
+        MutableComponent names = Component.empty();
+        boolean first = true;
+        for (Block block : blocks) {
+            if (!first) {
+                names.append(" || ");
+            }
+            names.append(block.getName());
+            first = false;
         }
-        if (!blockNames.isEmpty()) {
-            return Component.literal(blockNames + " [" + range + "]");
+        for (TagKey<Block> tag : tags) {
+            if (!first) {
+                names.append(" || ");
+            }
+            names.append(Component.literal("#" + tag.location()));
+            first = false;
         }
-        if (!tagNames.isEmpty()) {
-            return Component.literal(tagNames + " [" + range + "]");
-        }
-        return Component.literal("[" + range + "]");
+        return Component.translatable("recipe.condition.block.tooltip", names, minCount, maxCount);
     }
 
     @Override
