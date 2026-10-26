@@ -5,10 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "mbd2_more_extended.refmap.json",
   "mixins": [
-    "RecipeConditionMixin",
+    "RecipeConditionMixin"
+  ],
+  "client": [
     "MBDRecipeTypeMixin"
   ],
-  "client": [],
   "server": [],
   "injectors": {
     "defaultRequire": 1
