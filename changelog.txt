@@ -9,6 +9,10 @@ Recipe conditions
   it controls whether the condition appears in the recipe GUI condition description, is editable in the condition
   editor, and is serialized to JSON/network/NBT. KubeJS can use `condition.showInGui(false)` or the chained
   `MBDRecipeJS.showInGui(false)` after a condition helper.
+- The built-in `block` condition now supports block tags through a Mixin:
+  adds a `tags` field, tag editor filter, tag-aware matching, JSON/network/NBT serialization and tooltips.
+- Recipe UI condition slots: an item slot whose id is `@block_condition_<index>` displays the blocks/tags of that
+  condition in a cycle, with the condition tooltip and without becoming a recipe input. JEI Uses is not wired yet.
 
 MBD2 More Extended 1.0.0
 =======================

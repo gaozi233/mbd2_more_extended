@@ -1,5 +1,6 @@
 package com.gaozi.mbd2_more_extended.recipe;
 
+import com.gaozi.mbd2_more_extended.condition.IBlockConditionDisplay;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.ArrayConfiguratorGroup;
@@ -60,7 +61,7 @@ import java.util.List;
  * }
  * }</pre>
  */
-public class BlockTagCondition extends RecipeCondition {
+public class BlockTagCondition extends RecipeCondition implements IBlockConditionDisplay {
 
     public static final String TYPE = "block_ext";
 
@@ -101,6 +102,21 @@ public class BlockTagCondition extends RecipeCondition {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    @Override
+    public Block[] getDisplayBlocks() {
+        return blocks;
+    }
+
+    @Override
+    public TagKey<Block>[] getDisplayTags() {
+        return tags;
+    }
+
+    @Override
+    public Component getDisplayTooltip() {
+        return getTooltips();
     }
 
     @Override

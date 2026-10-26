@@ -22,6 +22,14 @@ It adds **no items, blocks or creative tabs** and extends multiblock behavior pu
   - 统计多方块结构里指定方块或方块标签的数量，判断是否在 `minCount ~ maxCount` 内
   - `blocks` 写方块 ID，`tags` 写标签 ID；`blocks` 里也支持 `#tag` 写法
   - 支持 JSON / 网络 / NBT，以及 KubeJS `blockExt(...)` 绑定
+- **原版 `block` 条件支持方块标签（Mixin）**
+  - 新增 `tags` 字段，配置面板带方块过滤器和标签过滤器
+  - 条件判断、JSON / 网络 / NBT、tooltip 都支持标签
+  - 旧配方不需要修改；`block_ext` 仍然保留
+- **配方 UI 条件槽位**
+  - 在配方 UI 模板里把物品槽 id 设为 `@block_condition_0`、`@block_condition_1` 等（对应 `conditions` 索引）
+  - 槽位会循环显示该条件里的方块/标签物品，悬停显示条件描述
+  - 该槽位不是输入，不参与配方逻辑；JEI Uses 暂未接入
 - **条件描述显隐 `showInGui`**
   - 所有 MBD2 配方条件（包括内置和其他模组注册的条件）都可控制是否出现在配方 GUI 的条件描述中
   - 条件配置面板有开关；KJS 支持 `condition.showInGui(false)` 和链式 `.showInGui(false)`
@@ -172,6 +180,14 @@ All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
   - Counts matching blocks or block tags in the multiblock structure between `minCount` and `maxCount`
   - `blocks` contains block IDs, `tags` contains tag IDs; `#tag` entries are also accepted in `blocks`
   - JSON / network / NBT serialization and the KubeJS `blockExt(...)` binding
+- **Built-in `block` condition now supports block tags (Mixin)**
+  - Adds a `tags` field with block and tag filters in the editor
+  - Condition matching, JSON / network / NBT and tooltips all handle tags
+  - Existing recipes keep working; `block_ext` remains available
+- **Recipe UI condition slots**
+  - Set an item slot id to `@block_condition_0`, `@block_condition_1`, etc. (index into `conditions`)
+  - The slot cycles through the condition's blocks/tags and shows the condition tooltip on hover
+  - It is not a recipe input and does not affect recipe logic; JEI Uses is not hooked up yet
 - **Condition description visibility `showInGui`**
   - Every MBD2 recipe condition (built-in or registered by another mod) can hide itself from the recipe GUI condition description
   - Toggle available in the condition editor; KubeJS supports `condition.showInGui(false)` and chained `.showInGui(false)`
