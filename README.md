@@ -18,6 +18,10 @@ It adds **no items, blocks or creative tabs** and extends multiblock behavior pu
   - 从机器的 `customData` 读取一个顶层数值键，按 `>=`、`>`、`<=`、`<`、`==`、`!=` 与目标值比较
   - 支持 JSON / 网络 / NBT 序列化，配方编辑器中有 key、运算符、数值配置
   - 继承 `RecipeCondition` 的“反转（reverse）”开关
+- **方块/标签条件 `block_ext`**
+  - 统计多方块结构里指定方块或方块标签的数量，判断是否在 `minCount ~ maxCount` 内
+  - `blocks` 写方块 ID，`tags` 写标签 ID；`blocks` 里也支持 `#tag` 写法
+  - 支持 JSON / 网络 / NBT，以及 KubeJS `blockExt(...)` 绑定
 - **魔源存储特质 `ars_source_storage`（需要 Ars Nouveau）**
   - 容量、传输速率可配置，source 存档持久化并同步客户端
   - Ars 交互方向 **IN / OUT / BOTH**，不区分机器面
@@ -30,6 +34,7 @@ It adds **no items, blocks or creative tabs** and extends multiblock behavior pu
   - 配方处理器方向 **IN / OUT / BOTH**，支持槽位名与“是否唯一（distinct）”
 - **KubeJS 可选绑定**
   - `nbtCompare(key, operator, value)`
+  - `blockExt(minCount, maxCount, entries)`，entries 支持方块 ID 和 `#标签`
 
 ### 环境要求
 
@@ -48,7 +53,7 @@ It adds **no items, blocks or creative tabs** and extends multiblock behavior pu
 1. 安装 Minecraft 1.20.1 + Forge 47.4.10
 2. 安装 **Multiblocked2 1.0.37+** 及其依赖 LDLib
 3. 可选：安装 Ars Nouveau（魔源功能）、KubeJS（脚本绑定）
-4. 把 `mbd2_more_extended-1.0.0.jar` 放进 `mods/`
+4. 把 `mbd2_more_extended-1.1.0.jar` 放进 `mods/`
 
 ### 使用
 
@@ -69,7 +74,27 @@ KubeJS 服务端脚本：
 m.addCondition(nbtCompare('magnetizer_level', '>=', level * 36))
 ```
 
-#### 2. 魔源特质
+#### 2. `block_ext` 配方条件
+
+```json
+{
+  "type": "block_ext",
+  "data": {
+    "minCount": 1,
+    "maxCount": 8,
+    "blocks": ["minecraft:stone"],
+    "tags": ["forge:stone"]
+  }
+}
+```
+
+KubeJS 服务端脚本：
+
+```js
+m.addCondition(blockExt(1, 8, ['minecraft:stone', '#forge:stone']))
+```
+
+#### 3. 魔源特质
 
 在机器编辑器里添加“新生魔艺 - 魔源存储”，按需配置：
 
@@ -79,7 +104,7 @@ m.addCondition(nbtCompare('magnetizer_level', '>=', level * 36))
 - 槽位名：逗号分隔，对应配方内容的 `slotName`
 - 是否唯一：对应 MBD2 的 `distinct`
 
-#### 3. `ars_source` 配方
+#### 4. `ars_source` 配方
 
 ```json
 "inputs": {
@@ -107,7 +132,7 @@ m.addCondition(nbtCompare('magnetizer_level', '>=', level * 36))
 
 ```bash
 ./gradlew clean build
-# 产物：build/libs/mbd2_more_extended-1.0.0.jar
+# 产物：build/libs/mbd2_more_extended-1.1.0.jar
 ```
 
 发布 jar 的 `META-INF/` 内包含 `LICENSE.txt`、`changelog.txt`、`CREDITS.txt`。
@@ -134,6 +159,10 @@ All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
   - Reads a top-level numeric key from the machine's `customData` and compares it with `>=`, `>`, `<=`, `<`, `==`, `!=`
   - JSON / network / NBT serialization; editor fields for key, operator and value
   - Inherited `RecipeCondition` reverse toggle
+- **`block_ext` block/tag condition**
+  - Counts matching blocks or block tags in the multiblock structure between `minCount` and `maxCount`
+  - `blocks` contains block IDs, `tags` contains tag IDs; `#tag` entries are also accepted in `blocks`
+  - JSON / network / NBT serialization and the KubeJS `blockExt(...)` binding
 - **`ars_source_storage` trait (requires Ars Nouveau)**
   - Configurable capacity / transfer rate; source is persisted and synced
   - Ars I/O mode **IN / OUT / BOTH**, with no per-face configuration
@@ -146,6 +175,7 @@ All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
   - Recipe handler direction **IN / OUT / BOTH**, plus slot names and the distinct flag
 - **Optional KubeJS binding**
   - `nbtCompare(key, operator, value)`
+  - `blockExt(minCount, maxCount, entries)`, where entries accept block IDs and `#tags`
 
 ### Requirements
 
@@ -164,7 +194,7 @@ All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
 1. Install Minecraft 1.20.1 + Forge 47.4.10
 2. Install **Multiblocked2 1.0.37+** and its LDLib dependency
 3. Optional: Ars Nouveau (source features), KubeJS (script binding)
-4. Put `mbd2_more_extended-1.0.0.jar` into `mods/`
+4. Put `mbd2_more_extended-1.1.0.jar` into `mods/`
 
 ### Usage
 
@@ -185,7 +215,27 @@ KubeJS server script:
 m.addCondition(nbtCompare('magnetizer_level', '>=', level * 36))
 ```
 
-#### 2. Source trait
+#### 2. `block_ext` recipe condition
+
+```json
+{
+  "type": "block_ext",
+  "data": {
+    "minCount": 1,
+    "maxCount": 8,
+    "blocks": ["minecraft:stone"],
+    "tags": ["forge:stone"]
+  }
+}
+```
+
+KubeJS server script:
+
+```js
+m.addCondition(blockExt(1, 8, ['minecraft:stone', '#forge:stone']))
+```
+
+#### 3. Source trait
 
 Add "Ars Nouveau - Source Storage" to the machine in the editor and configure:
 
@@ -195,7 +245,7 @@ Add "Ars Nouveau - Source Storage" to the machine in the editor and configure:
 - slot names: comma-separated, matching the recipe content `slotName`
 - distinct flag: MBD2's `distinct` semantics
 
-#### 3. `ars_source` recipes
+#### 4. `ars_source` recipes
 
 ```json
 "inputs": {
@@ -224,7 +274,7 @@ Requires JDK 17+. The repository's `libs/` folder contains the local JEI / Probe
 
 ```bash
 ./gradlew clean build
-# output: build/libs/mbd2_more_extended-1.0.0.jar
+# output: build/libs/mbd2_more_extended-1.1.0.jar
 ```
 
 The release jar contains `LICENSE.txt`, `changelog.txt` and `CREDITS.txt` under `META-INF/`.

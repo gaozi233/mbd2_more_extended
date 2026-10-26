@@ -1,3 +1,11 @@
+MBD2 More Extended 1.1.0
+=======================
+
+Recipe conditions
+- Added the `block_ext` recipe condition:
+  counts matching blocks or block tags in the multiblock structure between minCount and maxCount.
+  Supports `blocks`, `tags`, `#tag` entries, JSON/network/NBT serialization and the KubeJS `blockExt(...)` binding.
+
 MBD2 More Extended 1.0.0
 =======================
 
