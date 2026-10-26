@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -38,6 +39,22 @@ public class MBDRecipeTypeMixin {
 
     @Inject(method = "bindXEIRecipeUI", at = @At("TAIL"), remap = false)
     private void mbd2$filterConditionDescription(WidgetGroup root, MBDRecipe recipe, CallbackInfo ci) {
+        mbd2$updateConditionDescription(root, recipe);
+        mbd2$bindConditionSlots(root, recipe);
+    }
+
+    /**
+     * JEI/EMI/REI 走的是 {@code createRecipeUI}，不会调用 {@code bindXEIRecipeUI}。
+     * 因此这里也要绑定一次条件槽位。
+     */
+    @Inject(method = "createRecipeUI", at = @At("RETURN"), remap = false)
+    private void mbd2$bindCreatedRecipeUI(MBDRecipe recipe, CallbackInfoReturnable<WidgetGroup> cir) {
+        WidgetGroup root = cir.getReturnValue();
+        mbd2$updateConditionDescription(root, recipe);
+        mbd2$bindConditionSlots(root, recipe);
+    }
+
+    private static void mbd2$updateConditionDescription(WidgetGroup root, MBDRecipe recipe) {
         if (root == null || recipe == null || recipe.conditions == null) {
             return;
         }
@@ -48,23 +65,22 @@ public class MBDRecipeTypeMixin {
                 .toList();
         WidgetUtils.widgetByIdForEach(root, "^@condition$", TextBoxWidget.class,
                 textBox -> textBox.setContent(lines));
-
-        mbd2$bindConditionSlots(root, recipe);
     }
 
     /**
      * 把 {@code @block_condition_<index>} 槽位显示为该条件下方的方块/标签物品循环。
      */
     private static void mbd2$bindConditionSlots(WidgetGroup root, MBDRecipe recipe) {
+        if (root == null || recipe == null || recipe.conditions == null) {
+            return;
+        }
         for (Widget widget : WidgetUtils.getWidgetsById(root, "^@block_condition_\\d+$")) {
             if (!(widget instanceof SlotWidget slot)) {
                 continue;
             }
             int index = mbd2$conditionIndex(widget.getId());
-            if (index < 0 || index >= recipe.conditions.size()) {
-                continue;
-            }
-            if (!(recipe.conditions.get(index) instanceof IBlockConditionDisplay display)) {
+            IBlockConditionDisplay display = mbd2$findBlockCondition(recipe, index);
+            if (display == null) {
                 continue;
             }
             List<ItemStack> stacks = mbd2$displayStacks(display);
@@ -90,6 +106,30 @@ public class MBDRecipeTypeMixin {
         } catch (NumberFormatException ignored) {
             return -1;
         }
+    }
+
+    /**
+     * 先按 conditions 全局索引找；找不到时按“第几个方块条件”兜底，
+     * 这样 {@code @block_condition_0} 在前置条件不是方块条件时也能工作。
+     */
+    private static IBlockConditionDisplay mbd2$findBlockCondition(MBDRecipe recipe, int index) {
+        if (index < 0) {
+            return null;
+        }
+        if (index < recipe.conditions.size()
+                && recipe.conditions.get(index) instanceof IBlockConditionDisplay display) {
+            return display;
+        }
+        int ordinal = 0;
+        for (var condition : recipe.conditions) {
+            if (condition instanceof IBlockConditionDisplay display) {
+                if (ordinal == index) {
+                    return display;
+                }
+                ordinal++;
+            }
+        }
+        return null;
     }
 
     private static List<ItemStack> mbd2$displayStacks(IBlockConditionDisplay display) {
