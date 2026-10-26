@@ -2,9 +2,11 @@ package com.gaozi.mbd2_more_extended.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.lowdragmc.lowdraglib.gui.editor.configurator.ArrayConfiguratorGroup;
+import com.lowdragmc.lowdraglib.gui.editor.configurator.BlockConfigurator;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.ConfiguratorGroup;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.NumberConfigurator;
-import com.lowdragmc.lowdraglib.gui.editor.configurator.StringConfigurator;
+import com.lowdragmc.lowdraglib.gui.editor.configurator.SearchComponentConfigurator;
 import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
 import com.lowdragmc.lowdraglib.gui.texture.TextTexture;
 import com.lowdragmc.mbd2.api.machine.IMultiController;
@@ -22,11 +24,16 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
+import net.minecraftforge.registries.tags.ITagManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,7 +135,7 @@ public class BlockTagCondition extends RecipeCondition {
         super.buildConfigurator(group);
 
         NumberConfigurator minConfigurator = new NumberConfigurator(
-                getTranslationKey() + ".min_count",
+                "config.recipe.condition.block.min",
                 this::getMinCount,
                 number -> setMinCount(number == null ? 0 : number.intValue()),
                 minCount, false);
@@ -136,25 +143,50 @@ public class BlockTagCondition extends RecipeCondition {
         minConfigurator.setTips("config.recipe.condition.block_ext.min_count.tooltip");
 
         NumberConfigurator maxConfigurator = new NumberConfigurator(
-                getTranslationKey() + ".max_count",
+                "config.recipe.condition.block.max",
                 this::getMaxCount,
                 number -> setMaxCount(number == null ? 0 : number.intValue()),
                 maxCount, false);
         maxConfigurator.setRange(0, Integer.MAX_VALUE);
         maxConfigurator.setTips("config.recipe.condition.block_ext.max_count.tooltip");
 
-        StringConfigurator blocksConfigurator = new StringConfigurator(
-                getTranslationKey() + ".blocks",
-                this::blocksAsString,
-                this::setBlocksFromString,
-                "", false);
+        // 和 MBD2 自带 block 条件一致的方块过滤器。
+        ArrayConfiguratorGroup<Block> blocksConfigurator = new ArrayConfiguratorGroup<>(
+                "config.recipe.condition.block.blocks",
+                false,
+                () -> new ArrayList<>(Arrays.asList(blocks)),
+                (supplier, consumer) -> new BlockConfigurator("", supplier, consumer, Blocks.AIR, false),
+                true);
+        blocksConfigurator.setAddDefault(() -> Blocks.AIR);
+        blocksConfigurator.setOnUpdate(list -> blocks = list.toArray(Block[]::new));
         blocksConfigurator.setTips("config.recipe.condition.block_ext.blocks.tooltip");
 
-        StringConfigurator tagsConfigurator = new StringConfigurator(
-                getTranslationKey() + ".tags",
-                this::tagsAsString,
-                this::setTagsFromString,
-                "", false);
+        // 标签过滤器：搜索 Forge 方块标签，显示为 ResourceLocation。
+        ArrayConfiguratorGroup<ResourceLocation> tagsConfigurator = new ArrayConfiguratorGroup<>(
+                "config.predicate.tags",
+                false,
+                () -> new ArrayList<>(tagIds()),
+                (supplier, consumer) -> new SearchComponentConfigurator<>(
+                        "", supplier, consumer, BlockTags.SAND.location(), true,
+                        (search, result) -> {
+                            ITagManager<Block> tagManager = ForgeRegistries.BLOCKS.tags();
+                            if (tagManager == null) {
+                                return;
+                            }
+                            for (ITag<Block> tag : tagManager) {
+                                if (Thread.currentThread().isInterrupted()) {
+                                    return;
+                                }
+                                ResourceLocation id = tag.getKey().location();
+                                if (id.toString().toLowerCase().contains(search.toLowerCase())) {
+                                    result.accept(id);
+                                }
+                            }
+                        },
+                        ResourceLocation::toString),
+                true);
+        tagsConfigurator.setAddDefault(() -> BlockTags.SAND.location());
+        tagsConfigurator.setOnUpdate(this::setTagsFromList);
         tagsConfigurator.setTips("config.recipe.condition.block_ext.tags.tooltip");
 
         group.addConfigurators(minConfigurator, maxConfigurator, blocksConfigurator, tagsConfigurator);
@@ -375,6 +407,24 @@ public class BlockTagCondition extends RecipeCondition {
             ids.add(tag.location().toString());
         }
         return String.join(", ", ids);
+    }
+
+    private List<ResourceLocation> tagIds() {
+        List<ResourceLocation> ids = new ArrayList<>();
+        for (TagKey<Block> tag : tags) {
+            ids.add(tag.location());
+        }
+        return ids;
+    }
+
+    private void setTagsFromList(List<ResourceLocation> ids) {
+        List<TagKey<Block>> tagList = new ArrayList<>();
+        for (ResourceLocation id : ids) {
+            if (id != null) {
+                tagList.add(TagKey.create(Registries.BLOCK, id));
+            }
+        }
+        tags = tagList.toArray(TagKey[]::new);
     }
 
     private void setTagsFromString(String value) {
