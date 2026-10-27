@@ -6,7 +6,11 @@ import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.rhino.CustomFunction;
 
 /**
- * KubeJS 可选集成：注册全局函数 {@code nbtCompare(key, operator, value)}。
+ * KubeJS 可选集成：
+ * <ul>
+ *     <li>{@code nbtCompare(key, operator, value)}</li>
+ *     <li>{@code MBD2Helper} 机器朝向/坐标辅助对象</li>
+ * </ul>
  *
  * <p>支持标签的 {@code blocksInStructureAny(...)} 由
  * {@code MBDRecipeJSMixin} 在 KubeJS 存在时注入。</p>
@@ -18,6 +22,7 @@ public class MBD2MoreExtendedKubeJSPlugin extends KubeJSPlugin {
 
     @Override
     public void registerBindings(BindingsEvent event) {
+        event.add("MBD2Helper", new MBD2MachineHelper());
         event.add("nbtCompare", new CustomFunction("nbtCompare", (context, args) -> {
             if (args.length != 3) {
                 throw new IllegalArgumentException("nbtCompare(key, operator, value) expects exactly 3 arguments");
