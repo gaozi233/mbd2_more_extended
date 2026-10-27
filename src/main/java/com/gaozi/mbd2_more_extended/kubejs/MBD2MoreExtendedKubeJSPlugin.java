@@ -10,6 +10,7 @@ import dev.latvian.mods.rhino.CustomFunction;
  * <ul>
  *     <li>{@code nbtCompare(key, operator, value)}</li>
  *     <li>{@code MBD2Helper} 机器朝向/坐标辅助对象</li>
+ *     <li>{@code MBD2RecipeHelper} 配方只读辅助对象</li>
  * </ul>
  *
  * <p>支持标签的 {@code blocksInStructureAny(...)} 由
@@ -23,6 +24,7 @@ public class MBD2MoreExtendedKubeJSPlugin extends KubeJSPlugin {
     @Override
     public void registerBindings(BindingsEvent event) {
         event.add("MBD2Helper", new MBD2MachineHelper());
+        event.add("MBD2RecipeHelper", new MBD2RecipeHelper());
         event.add("nbtCompare", new CustomFunction("nbtCompare", (context, args) -> {
             if (args.length != 3) {
                 throw new IllegalArgumentException("nbtCompare(key, operator, value) expects exactly 3 arguments");
