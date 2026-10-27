@@ -93,7 +93,8 @@ public class MBDRecipeTypeMixin {
             }
 
             slot.setHandlerSlot(new CycleItemStackHandler(List.of(stacks)), 0);
-            slot.setIngredientIO(IngredientIO.RENDER_ONLY);
+            // 条件槽位不是配方输入，但在 JEI 中作为 CATALYST 参与“用途”查询。
+            slot.setIngredientIO(IngredientIO.CATALYST);
             slot.setCanTakeItems(false);
             slot.setCanPutItems(false);
             slot.setDrawHoverTips(true);
