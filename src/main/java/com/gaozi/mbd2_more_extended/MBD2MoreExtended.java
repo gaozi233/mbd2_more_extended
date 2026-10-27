@@ -6,10 +6,12 @@ import com.gaozi.mbd2_more_extended.recipe.NBTCompareCondition;
 import com.gaozi.mbd2_more_extended.trait.SourceTraitDefinition;
 import com.lowdragmc.mbd2.common.event.MBDRegistryEvent;
 import com.mojang.logging.LogUtils;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 /**
@@ -31,7 +33,10 @@ public class MBD2MoreExtended
     {
         IEventBus modEventBus = context.getModEventBus();
 
-        MBD2MoreExtendedClientConfig.load();
+        // 只读取客户端编辑器配置；专用服务端不加载该配置，也不参与任何服务端逻辑。
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            MBD2MoreExtendedClientConfig.load();
+        }
 
         // MBD2 功能扩展的入口：
         // 在这里向 modEventBus / MinecraftForge.EVENT_BUS 注册监听器，
