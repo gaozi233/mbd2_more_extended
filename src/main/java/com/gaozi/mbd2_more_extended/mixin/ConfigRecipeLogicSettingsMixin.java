@@ -1,5 +1,6 @@
 package com.gaozi.mbd2_more_extended.mixin;
 
+import com.gaozi.mbd2_more_extended.config.MBD2MoreExtendedClientConfig;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.Configurator;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.ConfiguratorGroup;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.SearchComponentConfigurator;
@@ -38,6 +39,9 @@ public abstract class ConfigRecipeLogicSettingsMixin {
 
     @Inject(method = "buildConfigurator", at = @At("RETURN"), remap = false)
     private void mbd2$replaceRecipeTypeSelector(ConfiguratorGroup group, CallbackInfo ci) {
+        if (!MBD2MoreExtendedClientConfig.editorEnhancements()) {
+            return;
+        }
         List<Configurator> configurators = group.getConfigurators();
         SelectorConfigurator<?> selector = null;
         int index = -1;

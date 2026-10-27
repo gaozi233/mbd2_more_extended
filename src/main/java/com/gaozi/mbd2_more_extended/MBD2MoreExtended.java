@@ -1,6 +1,7 @@
 package com.gaozi.mbd2_more_extended;
 
 import com.gaozi.mbd2_more_extended.capability.SourceRecipeCapability;
+import com.gaozi.mbd2_more_extended.config.MBD2MoreExtendedClientConfig;
 import com.gaozi.mbd2_more_extended.recipe.NBTCompareCondition;
 import com.gaozi.mbd2_more_extended.trait.SourceTraitDefinition;
 import com.lowdragmc.mbd2.common.event.MBDRegistryEvent;
@@ -29,6 +30,8 @@ public class MBD2MoreExtended
     public MBD2MoreExtended(FMLJavaModLoadingContext context)
     {
         IEventBus modEventBus = context.getModEventBus();
+
+        MBD2MoreExtendedClientConfig.load();
 
         // MBD2 功能扩展的入口：
         // 在这里向 modEventBus / MinecraftForge.EVENT_BUS 注册监听器，

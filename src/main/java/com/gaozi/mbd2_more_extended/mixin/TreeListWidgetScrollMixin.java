@@ -1,5 +1,6 @@
 package com.gaozi.mbd2_more_extended.mixin;
 
+import com.gaozi.mbd2_more_extended.config.MBD2MoreExtendedClientConfig;
 import com.lowdragmc.lowdraglib.gui.widget.TreeListWidget;
 import com.lowdragmc.lowdraglib.gui.widget.Widget;
 import net.minecraft.client.gui.GuiGraphics;
@@ -46,6 +47,9 @@ public abstract class TreeListWidgetScrollMixin {
 
     @Inject(method = "drawInBackground", at = @At("TAIL"), remap = false)
     private void mbd2$drawScrollbar(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+        if (!MBD2MoreExtendedClientConfig.editorEnhancements()) {
+            return;
+        }
         int viewHeight = mbd2$self().getSizeHeight();
         int contentHeight = mbd2$contentHeight();
         if (viewHeight <= 0 || contentHeight <= viewHeight) {
@@ -67,6 +71,9 @@ public abstract class TreeListWidgetScrollMixin {
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true, remap = false)
     private void mbd2$scrollbarClick(double mouseX, double mouseY, int button,
                                      CallbackInfoReturnable<Boolean> cir) {
+        if (!MBD2MoreExtendedClientConfig.editorEnhancements()) {
+            return;
+        }
         if (button != 0 || !mbd2$isOnScrollbar(mouseX, mouseY)) {
             return;
         }
@@ -93,7 +100,8 @@ public abstract class TreeListWidgetScrollMixin {
      * 添加到 TreeListWidget，覆盖 Widget 的默认实现。
      */
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if (!mbd2MoreExtended$draggingScrollbar) {
+        if (!MBD2MoreExtendedClientConfig.editorEnhancements()
+                || !mbd2MoreExtended$draggingScrollbar) {
             return false;
         }
         int viewHeight = mbd2$self().getSizeHeight();
@@ -108,6 +116,10 @@ public abstract class TreeListWidgetScrollMixin {
      * 添加到 TreeListWidget，覆盖 Widget 的默认实现。
      */
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (!MBD2MoreExtendedClientConfig.editorEnhancements()) {
+            mbd2MoreExtended$draggingScrollbar = false;
+            return false;
+        }
         if (mbd2MoreExtended$draggingScrollbar) {
             mbd2MoreExtended$draggingScrollbar = false;
             return true;
