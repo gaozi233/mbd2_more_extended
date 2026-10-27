@@ -8,16 +8,8 @@
   "config.recipe.condition.nbt_compare.operator.tooltip": "比较运算符（>=、>、<=、<、==、!=）",
   "config.recipe.condition.nbt_compare.value.tooltip": "与该键的值进行比较的目标值",
 
-  "recipe.condition.block_ext": "多方块包含方块（标签）",
-  "recipe.condition.block_ext.min_count": "最小数量",
-  "recipe.condition.block_ext.max_count": "最大数量",
-  "recipe.condition.block_ext.blocks": "方块列表",
-  "recipe.condition.block_ext.tags": "方块标签",
   "recipe.condition.block.count_range": "数量范围：%s ~ %s",
-  "config.recipe.condition.block_ext.min_count.tooltip": "多方块结构中匹配方块的最少数量",
-  "config.recipe.condition.block_ext.max_count.tooltip": "多方块结构中匹配方块的最多数量",
-  "config.recipe.condition.block_ext.blocks.tooltip": "逗号分隔的方块 ID；也支持 #标签 写法",
-  "config.recipe.condition.block_ext.tags.tooltip": "逗号分隔的方块标签 ID，例如 forge:stone",
+  "config.recipe.condition.block.tags.tooltip": "要匹配的方块标签；任一标签命中即计入数量",
   "config.recipe.condition.show_in_gui": "在条件描述中显示",
   "config.recipe.condition.show_in_gui.tooltip": "是否在配方 GUI 的条件描述中列出该条件",
 

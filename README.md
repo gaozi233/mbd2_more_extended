@@ -18,17 +18,13 @@ It adds **no items, blocks or creative tabs** and extends multiblock behavior pu
   - 从机器的 `customData` 读取一个顶层数值键，按 `>=`、`>`、`<=`、`<`、`==`、`!=` 与目标值比较
   - 支持 JSON / 网络 / NBT 序列化，配方编辑器中有 key、运算符、数值配置
   - 继承 `RecipeCondition` 的“反转（reverse）”开关
-- **方块/标签条件 `block_ext`**
-  - 统计多方块结构里指定方块或方块标签的数量，判断是否在 `minCount ~ maxCount` 内
-  - `blocks` 写方块 ID，`tags` 写标签 ID；`blocks` 里也支持 `#tag` 写法
-  - 支持 JSON / 网络 / NBT，以及 KubeJS `blockExt(...)` 绑定
 - **原版 `block` 条件支持方块标签（Mixin）**
   - 新增 `tags` 字段，配置面板带方块过滤器和标签过滤器
   - 条件判断、JSON / 网络 / NBT、tooltip 都支持标签
-  - 旧配方不需要修改；`block_ext` 仍然保留
+  - 旧配方不需要修改
 - **配方 UI 条件槽位**
   - 在配方 UI 模板里把物品槽 id 设为 `@block_condition_0`、`@block_condition_1` 等（对应 `conditions` 索引）
-  - 槽位会循环显示该条件里的方块/标签物品，悬停显示条件描述
+  - 槽位会循环显示该条件里的方块/标签物品，悬停显示条件描述和数量范围
   - 该槽位不是输入，不参与配方逻辑；JEI Uses 暂未接入
 - **条件描述显隐 `showInGui`**
   - 所有 MBD2 配方条件（包括内置和其他模组注册的条件）都可控制是否出现在配方 GUI 的条件描述中
@@ -45,7 +41,7 @@ It adds **no items, blocks or creative tabs** and extends multiblock behavior pu
   - 配方处理器方向 **IN / OUT / BOTH**，支持槽位名与“是否唯一（distinct）”
 - **KubeJS 可选绑定**
   - `nbtCompare(key, operator, value)`
-  - `blockExt(minCount, maxCount, entries)`，entries 支持方块 ID 和 `#标签`
+  - `blocksInStructureAny(minCount, maxCount, entries...)`，entries 支持方块 ID 和 `#标签`
 
 ### 环境要求
 
@@ -85,11 +81,11 @@ KubeJS 服务端脚本：
 m.addCondition(nbtCompare('magnetizer_level', '>=', level * 36))
 ```
 
-#### 2. `block_ext` 配方条件
+#### 2. 原版 `block` 条件（标签）
 
 ```json
 {
-  "type": "block_ext",
+  "type": "block",
   "data": {
     "minCount": 1,
     "maxCount": 8,
@@ -102,10 +98,10 @@ m.addCondition(nbtCompare('magnetizer_level', '>=', level * 36))
 KubeJS 服务端脚本：
 
 ```js
-m.addCondition(blockExt(1, 8, ['minecraft:stone', '#forge:stone']))
+m.blocksInStructureAny(1, 8, 'minecraft:stone', '#forge:stone')
 
 // 不显示在配方 GUI 的条件描述中
-m.addCondition(blockExt(1, 8, ['minecraft:stone']).showInGui(false))
+m.blocksInStructureAny(1, 8, 'minecraft:stone').showInGui(false)
 
 // 内置条件同样支持链式调用
 m.dimension('minecraft:overworld').showInGui(false)
@@ -176,17 +172,13 @@ All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
   - Reads a top-level numeric key from the machine's `customData` and compares it with `>=`, `>`, `<=`, `<`, `==`, `!=`
   - JSON / network / NBT serialization; editor fields for key, operator and value
   - Inherited `RecipeCondition` reverse toggle
-- **`block_ext` block/tag condition**
-  - Counts matching blocks or block tags in the multiblock structure between `minCount` and `maxCount`
-  - `blocks` contains block IDs, `tags` contains tag IDs; `#tag` entries are also accepted in `blocks`
-  - JSON / network / NBT serialization and the KubeJS `blockExt(...)` binding
 - **Built-in `block` condition now supports block tags (Mixin)**
   - Adds a `tags` field with block and tag filters in the editor
   - Condition matching, JSON / network / NBT and tooltips all handle tags
-  - Existing recipes keep working; `block_ext` remains available
+  - Existing recipes keep working
 - **Recipe UI condition slots**
   - Set an item slot id to `@block_condition_0`, `@block_condition_1`, etc. (index into `conditions`)
-  - The slot cycles through the condition's blocks/tags and shows the condition tooltip on hover
+  - The slot cycles through the condition's blocks/tags and shows the condition tooltip and count range on hover
   - It is not a recipe input and does not affect recipe logic; JEI Uses is not hooked up yet
 - **Condition description visibility `showInGui`**
   - Every MBD2 recipe condition (built-in or registered by another mod) can hide itself from the recipe GUI condition description
@@ -203,7 +195,7 @@ All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
   - Recipe handler direction **IN / OUT / BOTH**, plus slot names and the distinct flag
 - **Optional KubeJS binding**
   - `nbtCompare(key, operator, value)`
-  - `blockExt(minCount, maxCount, entries)`, where entries accept block IDs and `#tags`
+  - `blocksInStructureAny(minCount, maxCount, entries...)`, where entries accept block IDs and `#tags`
 
 ### Requirements
 
@@ -243,11 +235,11 @@ KubeJS server script:
 m.addCondition(nbtCompare('magnetizer_level', '>=', level * 36))
 ```
 
-#### 2. `block_ext` recipe condition
+#### 2. Built-in `block` condition (tags)
 
 ```json
 {
-  "type": "block_ext",
+  "type": "block",
   "data": {
     "minCount": 1,
     "maxCount": 8,
@@ -260,10 +252,10 @@ m.addCondition(nbtCompare('magnetizer_level', '>=', level * 36))
 KubeJS server script:
 
 ```js
-m.addCondition(blockExt(1, 8, ['minecraft:stone', '#forge:stone']))
+m.blocksInStructureAny(1, 8, 'minecraft:stone', '#forge:stone')
 
 // Hide it from the recipe GUI condition description
-m.addCondition(blockExt(1, 8, ['minecraft:stone']).showInGui(false))
+m.blocksInStructureAny(1, 8, 'minecraft:stone').showInGui(false)
 
 // Built-in conditions support the same chained call
 m.dimension('minecraft:overworld').showInGui(false)

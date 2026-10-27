@@ -8,16 +8,8 @@
   "config.recipe.condition.nbt_compare.operator.tooltip": "Comparison operator (>=, >, <=, <, ==, !=)",
   "config.recipe.condition.nbt_compare.value.tooltip": "Value the custom data entry is compared against",
 
-  "recipe.condition.block_ext": "Block in multiblock (tags)",
-  "recipe.condition.block_ext.min_count": "Min count",
-  "recipe.condition.block_ext.max_count": "Max count",
-  "recipe.condition.block_ext.blocks": "Blocks",
-  "recipe.condition.block_ext.tags": "Block tags",
   "recipe.condition.block.count_range": "Count: %s ~ %s",
-  "config.recipe.condition.block_ext.min_count.tooltip": "Minimum number of matching blocks in the multiblock",
-  "config.recipe.condition.block_ext.max_count.tooltip": "Maximum number of matching blocks in the multiblock",
-  "config.recipe.condition.block_ext.blocks.tooltip": "Comma-separated block IDs; #tag entries are also accepted",
-  "config.recipe.condition.block_ext.tags.tooltip": "Comma-separated block tag IDs, e.g. forge:stone",
+  "config.recipe.condition.block.tags.tooltip": "Block tags to match; the block condition passes when any tag matches",
   "config.recipe.condition.show_in_gui": "Show in condition description",
   "config.recipe.condition.show_in_gui.tooltip": "Whether this condition is listed in the recipe GUI condition description",
 

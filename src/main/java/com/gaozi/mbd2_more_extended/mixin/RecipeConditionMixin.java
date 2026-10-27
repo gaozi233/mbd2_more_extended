@@ -43,7 +43,7 @@ public abstract class RecipeConditionMixin implements IConditionVisibility {
     }
 
     /**
-     * KubeJS 可直接在条件对象上链式调用：{@code blockExt(...).showInGui(false)}。
+     * KubeJS 可直接在条件对象上链式调用：{@code blocksInStructureAny(...).showInGui(false)}。
      */
     @Unique
     public RecipeCondition showInGui(boolean show) {

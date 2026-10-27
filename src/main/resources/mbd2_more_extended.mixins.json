@@ -9,7 +9,8 @@
     "BlockConditionMixin"
   ],
   "client": [
-    "MBDRecipeTypeMixin"
+    "MBDRecipeTypeMixin",
+    "LDLibJEISlotTooltipMixin"
   ],
   "server": [],
   "injectors": {

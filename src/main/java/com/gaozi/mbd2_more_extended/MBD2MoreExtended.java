@@ -1,7 +1,6 @@
 package com.gaozi.mbd2_more_extended;
 
 import com.gaozi.mbd2_more_extended.capability.SourceRecipeCapability;
-import com.gaozi.mbd2_more_extended.recipe.BlockTagCondition;
 import com.gaozi.mbd2_more_extended.recipe.NBTCompareCondition;
 import com.gaozi.mbd2_more_extended.trait.SourceTraitDefinition;
 import com.lowdragmc.mbd2.common.event.MBDRegistryEvent;
@@ -47,8 +46,6 @@ public class MBD2MoreExtended
      */
     private void registerRecipeConditions(MBDRegistryEvent.RecipeCondition event) {
         event.register(NBTCompareCondition.TYPE, NBTCompareCondition.class);
-        event.register(BlockTagCondition.TYPE, BlockTagCondition.class);
-        LOGGER.info("Registered recipe condition '{}'", BlockTagCondition.TYPE);
     }
 
     /**

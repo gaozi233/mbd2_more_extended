@@ -1,6 +1,7 @@
 package com.gaozi.mbd2_more_extended.mixin;
 
 import com.gaozi.mbd2_more_extended.condition.IBlockConditionDisplay;
+import com.gaozi.mbd2_more_extended.condition.IBlockConditionTags;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.lowdragmc.lowdraglib.gui.editor.configurator.ArrayConfiguratorGroup;
@@ -48,7 +49,7 @@ import java.util.List;
  * 条件判断、JSON/网络/NBT 序列化、tooltip 和配置面板都会处理标签。</p>
  */
 @Mixin(value = BlockCondition.class, remap = false)
-public abstract class BlockConditionMixin extends RecipeCondition implements IBlockConditionDisplay {
+public abstract class BlockConditionMixin extends RecipeCondition implements IBlockConditionDisplay, IBlockConditionTags {
 
     @Shadow
     private int minCount;
@@ -87,12 +88,12 @@ public abstract class BlockConditionMixin extends RecipeCondition implements IBl
         return getTooltips();
     }
 
-    @Unique
+    @Override
     public TagKey<Block>[] getTags() {
         return mbd2MoreExtended$tags;
     }
 
-    @Unique
+    @Override
     public void setTags(TagKey<Block>[] tags) {
         mbd2MoreExtended$tags = tags == null ? new TagKey[0] : tags;
     }
@@ -252,7 +253,7 @@ public abstract class BlockConditionMixin extends RecipeCondition implements IBl
                 true);
         tagsConfigurator.setAddDefault(() -> BlockTags.SAND.location());
         tagsConfigurator.setOnUpdate(this::mbd2$setTagIds);
-        tagsConfigurator.setTips("config.recipe.condition.block_ext.tags.tooltip");
+        tagsConfigurator.setTips("config.recipe.condition.block.tags.tooltip");
 
         group.addConfigurators(tagsConfigurator);
     }
