@@ -1,5 +1,7 @@
 package com.gaozi.mbd2_more_extended.kubejs;
 
+import com.lowdragmc.mbd2.api.blockentity.IMachineBlockEntity;
+import com.lowdragmc.mbd2.api.machine.IMachine;
 import com.lowdragmc.mbd2.common.machine.MBDMachine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,6 +15,8 @@ import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -27,6 +31,21 @@ import java.util.Objects;
  * 避免 up/down 朝向下 left/right 的参考轴歧义。</p>
  */
 public final class MBD2MachineHelper {
+
+    /**
+     * 取指定坐标上的 MBD2 机器；不是机器方块时返回 null。
+     */
+    public MBDMachine getMachineAt(Level level, BlockPos pos) {
+        if (level == null || pos == null) {
+            return null;
+        }
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (!(blockEntity instanceof IMachineBlockEntity machineBlockEntity)) {
+            return null;
+        }
+        IMachine machine = machineBlockEntity.getMetaMachine();
+        return machine instanceof MBDMachine mbdMachine ? mbdMachine : null;
+    }
 
     /**
      * 返回机器相对方位到绝对方向的映射：
