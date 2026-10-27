@@ -11,7 +11,8 @@
   "client": [
     "MBDRecipeTypeMixin",
     "LDLibJEISlotTooltipMixin",
-    "TreeListWidgetScrollMixin"
+    "TreeListWidgetScrollMixin",
+    "ConfigRecipeLogicSettingsMixin"
   ],
   "server": [],
   "injectors": {
