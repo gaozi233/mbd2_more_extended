@@ -9,8 +9,7 @@
     "BlockConditionMixin",
     "SlotWidgetItemTransferMaxStackMixin",
     "ModularUIContainerMergeMixin",
-    "ModularUIContainerQuickMoveMixin",
-    "FriendlyByteBufItemMixin"
+    "ModularUIContainerQuickMoveMixin"
   ],
   "client": [
     "MBDRecipeTypeMixin",
