@@ -102,6 +102,8 @@ public final class MBD2MoreExtendedSettingsDialog {
         refresh(dialog, content);
 
         ModularUI ui = new ModularUI(root, HOLDER, minecraft.player);
+        // 手动初始化，确保 Dialog 和内部 Button 都拿到 gui，避免 LDLib 的拖动事件空指针。
+        ui.initWidgets();
         minecraft.setScreen(new ModularUIGuiContainer(ui, 0));
     }
 
