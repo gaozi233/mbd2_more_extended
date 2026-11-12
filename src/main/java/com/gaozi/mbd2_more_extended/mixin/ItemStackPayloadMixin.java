@@ -5,7 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Overwrite;
 
 /**
@@ -18,16 +17,14 @@ import org.spongepowered.asm.mixin.Overwrite;
 @Mixin(value = ItemStackPayload.class, remap = false)
 public abstract class ItemStackPayloadMixin {
 
-    @Shadow
-    protected Object payload;
-
     /**
      * @author MBD2 More Extended
      * @reason 支持过载物品槽超过 127 的堆叠数量同步。
      */
     @Overwrite
     public void writePayload(FriendlyByteBuf buf) {
-        ItemStack stack = (ItemStack) payload;
+        ItemStackPayload self = (ItemStackPayload) (Object) this;
+        ItemStack stack = (ItemStack) self.getPayload();
         if (stack.getCount() > Byte.MAX_VALUE) {
             buf.writeBoolean(true);
             buf.writeNbt(stack.save(new CompoundTag()));
@@ -43,11 +40,12 @@ public abstract class ItemStackPayloadMixin {
      */
     @Overwrite
     public void readPayload(FriendlyByteBuf buf) {
+        ItemStackPayload self = (ItemStackPayload) (Object) this;
         if (buf.readBoolean()) {
             CompoundTag tag = buf.readNbt();
-            payload = tag == null ? ItemStack.EMPTY : ItemStack.of(tag);
+            self.setPayload(tag == null ? ItemStack.EMPTY : ItemStack.of(tag));
         } else {
-            payload = buf.readItem();
+            self.setPayload(buf.readItem());
         }
     }
 }
