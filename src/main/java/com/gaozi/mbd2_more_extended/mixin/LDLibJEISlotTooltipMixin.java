@@ -3,13 +3,13 @@ package com.gaozi.mbd2_more_extended.mixin;
 import com.lowdragmc.lowdraglib.gui.ingredient.IRecipeIngredientSlot;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,14 +25,21 @@ import java.util.List;
 @Mixin(targets = "com.lowdragmc.lowdraglib.jei.ModularUIRecipeCategory$2")
 public abstract class LDLibJEISlotTooltipMixin {
 
-    @Shadow(remap = false)
-    @Final
-    private IRecipeIngredientSlot val$slot;
-
     @Inject(method = "getTooltip(Ljava/lang/Object;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;",
             at = @At("HEAD"), cancellable = true, remap = false)
     private void mbd2$returnSlotTooltip(Object ingredient, TooltipFlag flag,
                                         CallbackInfoReturnable<List<Component>> cir) {
-        cir.setReturnValue(val$slot.getFullTooltipTexts());
+        try {
+            Field field = getClass().getDeclaredField("val$slot");
+            field.setAccessible(true);
+            Object value = field.get(this);
+            if (value instanceof IRecipeIngredientSlot slot) {
+                cir.setReturnValue(slot.getFullTooltipTexts());
+            } else {
+                cir.setReturnValue(Collections.emptyList());
+            }
+        } catch (ReflectiveOperationException exception) {
+            cir.setReturnValue(Collections.emptyList());
+        }
     }
 }

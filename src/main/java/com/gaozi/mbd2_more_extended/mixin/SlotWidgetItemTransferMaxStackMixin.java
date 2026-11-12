@@ -1,6 +1,7 @@
 package com.gaozi.mbd2_more_extended.mixin;
 
 import com.gaozi.mbd2_more_extended.trait.OverstackItemStackTransfer;
+import com.lowdragmc.lowdraglib.gui.widget.SlotWidget;
 import com.lowdragmc.lowdraglib.side.item.IItemTransfer;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
@@ -17,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * maxStackSize 计算，即使存储层的 slotLimit 更大，鼠标点击也最多只能放入 64 个。
  * 这里仅对该存储是 {@link OverstackItemStackTransfer} 的槽位使用过载公式。</p>
  */
-@Mixin(targets = "com.lowdragmc.lowdraglib.gui.widget.SlotWidget$WidgetSlotItemTransfer", remap = false)
+@Mixin(value = SlotWidget.WidgetSlotItemTransfer.class, remap = false)
 public abstract class SlotWidgetItemTransferMaxStackMixin {
 
     @Shadow

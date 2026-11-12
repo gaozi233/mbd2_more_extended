@@ -34,7 +34,7 @@ public abstract class TreeListWidgetScrollMixin {
     protected int scrollOffset;
 
     @Shadow
-    protected List<?> list;
+    protected List list;
 
     @Shadow
     protected int lineHeight;

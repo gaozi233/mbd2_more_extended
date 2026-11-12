@@ -19,10 +19,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * AIR 槽位作为哨兵，并把完整 ItemStack NBT 放在后面。普通数量和原版格式完全一致，
  * 因此不会影响未超量的物品同步。</p>
  */
-@Mixin(value = FriendlyByteBuf.class, remap = false)
+@Mixin(value = FriendlyByteBuf.class)
 public abstract class FriendlyByteBufItemMixin {
 
-    @Inject(method = "writeItem", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "writeItem", at = @At("HEAD"), cancellable = true)
     private void mbd2$writeOverstackItem(ItemStack stack,
                                          CallbackInfoReturnable<FriendlyByteBuf> cir) {
         if (!stack.isEmpty() && stack.getCount() > Byte.MAX_VALUE) {
@@ -41,7 +41,7 @@ public abstract class FriendlyByteBufItemMixin {
      * @author MBD2 More Extended
      * @reason 识别 writeItem 中的 AIR 哨兵并恢复超过 127 的完整 ItemStack。
      */
-    @Overwrite
+    @Overwrite(aliases = "m_130267_", remap = false)
     public ItemStack readItem() {
         FriendlyByteBuf buf = (FriendlyByteBuf) (Object) this;
         if (!buf.readBoolean()) {
