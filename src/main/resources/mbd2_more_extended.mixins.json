@@ -12,8 +12,7 @@
     "MBDRecipeTypeMixin",
     "LDLibJEISlotTooltipMixin",
     "TreeListWidgetScrollMixin",
-    "ConfigRecipeLogicSettingsMixin",
-    "MachineEditorConfigButtonMixin"
+    "ConfigRecipeLogicSettingsMixin"
   ],
   "server": [],
   "injectors": {

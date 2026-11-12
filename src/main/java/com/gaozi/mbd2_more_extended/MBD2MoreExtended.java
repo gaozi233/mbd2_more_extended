@@ -1,6 +1,7 @@
 package com.gaozi.mbd2_more_extended;
 
 import com.gaozi.mbd2_more_extended.capability.SourceRecipeCapability;
+import com.gaozi.mbd2_more_extended.client.MBD2MoreExtendedClient;
 import com.gaozi.mbd2_more_extended.config.MBD2MoreExtendedClientConfig;
 import com.gaozi.mbd2_more_extended.recipe.NBTCompareCondition;
 import com.gaozi.mbd2_more_extended.trait.SourceTraitDefinition;
@@ -36,6 +37,7 @@ public class MBD2MoreExtended
         // 只读取客户端编辑器配置；专用服务端不加载该配置，也不参与任何服务端逻辑。
         if (FMLEnvironment.dist == Dist.CLIENT) {
             MBD2MoreExtendedClientConfig.load();
+            MBD2MoreExtendedClient.init();
         }
 
         // MBD2 功能扩展的入口：

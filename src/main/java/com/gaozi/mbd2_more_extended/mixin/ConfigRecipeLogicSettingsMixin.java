@@ -39,7 +39,7 @@ public abstract class ConfigRecipeLogicSettingsMixin {
 
     @Inject(method = "buildConfigurator", at = @At("RETURN"), remap = false)
     private void mbd2$replaceRecipeTypeSelector(ConfiguratorGroup group, CallbackInfo ci) {
-        if (!MBD2MoreExtendedClientConfig.editorEnhancements()) {
+        if (!MBD2MoreExtendedClientConfig.recipeTypeSearchEnabled()) {
             return;
         }
         List<Configurator> configurators = group.getConfigurators();

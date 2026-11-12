@@ -11,27 +11,56 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 /**
- * 客户端编辑器增强开关。
- *
- * <p>控制本模组新增的编辑器 Mixin 功能：
- * 文件列表滚动条、配方类型搜索。关闭后保留 MBD2/LDLib 原始行为。</p>
+ * 客户端编辑器增强配置，仅用于客户端 UI，不参与服务端逻辑。
  */
 public final class MBD2MoreExtendedClientConfig {
 
     private static final String FILE_NAME = "mbd2_more_extended-client.properties";
-    private static final String KEY_EDITOR_ENHANCEMENTS = "editorEnhancements";
 
-    private static boolean editorEnhancements = true;
+    private static final String KEY_GLOBAL = "editor.globalEnabled";
+    private static final String KEY_FILE_LIST_SCROLLBAR = "editor.fileListScrollbar";
+    private static final String KEY_RECIPE_TYPE_SEARCH = "editor.recipeTypeSearch";
+    private static final String LEGACY_KEY = "editorEnhancements";
+
+    private static boolean globalEnabled = true;
+    private static boolean fileListScrollbar = true;
+    private static boolean recipeTypeSearch = true;
 
     private MBD2MoreExtendedClientConfig() {
     }
 
-    public static boolean editorEnhancements() {
-        return editorEnhancements;
+    public static boolean isGlobalEnabled() {
+        return globalEnabled;
     }
 
-    public static void setEditorEnhancements(boolean enabled) {
-        editorEnhancements = enabled;
+    public static boolean isFileListScrollbar() {
+        return fileListScrollbar;
+    }
+
+    public static boolean isRecipeTypeSearch() {
+        return recipeTypeSearch;
+    }
+
+    public static boolean fileListScrollbarEnabled() {
+        return globalEnabled && fileListScrollbar;
+    }
+
+    public static boolean recipeTypeSearchEnabled() {
+        return globalEnabled && recipeTypeSearch;
+    }
+
+    public static void setGlobalEnabled(boolean enabled) {
+        globalEnabled = enabled;
+        save();
+    }
+
+    public static void setFileListScrollbar(boolean enabled) {
+        fileListScrollbar = enabled;
+        save();
+    }
+
+    public static void setRecipeTypeSearch(boolean enabled) {
+        recipeTypeSearch = enabled;
         save();
     }
 
@@ -43,21 +72,31 @@ public final class MBD2MoreExtendedClientConfig {
         Properties properties = new Properties();
         try (InputStream input = Files.newInputStream(path)) {
             properties.load(input);
-            editorEnhancements = Boolean.parseBoolean(
-                    properties.getProperty(KEY_EDITOR_ENHANCEMENTS, "true"));
+            if (properties.containsKey(LEGACY_KEY)) {
+                boolean legacy = Boolean.parseBoolean(properties.getProperty(LEGACY_KEY, "true"));
+                globalEnabled = legacy;
+                fileListScrollbar = legacy;
+                recipeTypeSearch = legacy;
+                return;
+            }
+            globalEnabled = Boolean.parseBoolean(properties.getProperty(KEY_GLOBAL, "true"));
+            fileListScrollbar = Boolean.parseBoolean(properties.getProperty(KEY_FILE_LIST_SCROLLBAR, "true"));
+            recipeTypeSearch = Boolean.parseBoolean(properties.getProperty(KEY_RECIPE_TYPE_SEARCH, "true"));
         } catch (IOException exception) {
             MBD2MoreExtended.LOGGER.warn("Failed to load client config {}", path, exception);
         }
     }
 
-    private static void save() {
+    public static void save() {
         Path path = configPath();
         Properties properties = new Properties();
-        properties.setProperty(KEY_EDITOR_ENHANCEMENTS, Boolean.toString(editorEnhancements));
+        properties.setProperty(KEY_GLOBAL, Boolean.toString(globalEnabled));
+        properties.setProperty(KEY_FILE_LIST_SCROLLBAR, Boolean.toString(fileListScrollbar));
+        properties.setProperty(KEY_RECIPE_TYPE_SEARCH, Boolean.toString(recipeTypeSearch));
         try {
             Files.createDirectories(path.getParent());
             try (OutputStream output = Files.newOutputStream(path)) {
-                properties.store(output, "MBD2 More Extended client settings");
+                properties.store(output, "MBD2 More Extended client editor settings");
             }
         } catch (IOException exception) {
             MBD2MoreExtended.LOGGER.warn("Failed to save client config {}", path, exception);

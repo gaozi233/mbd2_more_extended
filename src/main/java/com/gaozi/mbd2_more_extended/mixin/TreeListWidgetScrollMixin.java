@@ -47,7 +47,7 @@ public abstract class TreeListWidgetScrollMixin {
 
     @Inject(method = "drawInBackground", at = @At("TAIL"), remap = false)
     private void mbd2$drawScrollbar(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
-        if (!MBD2MoreExtendedClientConfig.editorEnhancements()) {
+        if (!MBD2MoreExtendedClientConfig.fileListScrollbarEnabled()) {
             return;
         }
         int viewHeight = mbd2$self().getSizeHeight();
@@ -71,7 +71,7 @@ public abstract class TreeListWidgetScrollMixin {
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true, remap = false)
     private void mbd2$scrollbarClick(double mouseX, double mouseY, int button,
                                      CallbackInfoReturnable<Boolean> cir) {
-        if (!MBD2MoreExtendedClientConfig.editorEnhancements()) {
+        if (!MBD2MoreExtendedClientConfig.fileListScrollbarEnabled()) {
             return;
         }
         if (button != 0 || !mbd2$isOnScrollbar(mouseX, mouseY)) {
@@ -100,7 +100,7 @@ public abstract class TreeListWidgetScrollMixin {
      * 添加到 TreeListWidget，覆盖 Widget 的默认实现。
      */
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if (!MBD2MoreExtendedClientConfig.editorEnhancements()
+        if (!MBD2MoreExtendedClientConfig.fileListScrollbarEnabled()
                 || !mbd2MoreExtended$draggingScrollbar) {
             return false;
         }
@@ -116,7 +116,7 @@ public abstract class TreeListWidgetScrollMixin {
      * 添加到 TreeListWidget，覆盖 Widget 的默认实现。
      */
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (!MBD2MoreExtendedClientConfig.editorEnhancements()) {
+        if (!MBD2MoreExtendedClientConfig.fileListScrollbarEnabled()) {
             mbd2MoreExtended$draggingScrollbar = false;
             return false;
         }
