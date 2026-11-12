@@ -10,8 +10,7 @@
     "SlotWidgetItemTransferMaxStackMixin",
     "ModularUIContainerMergeMixin",
     "ModularUIContainerQuickMoveMixin",
-    "ItemStackPayloadMixin",
-    "ContainerSetSlotPacketOverstackMixin"
+    "FriendlyByteBufItemMixin"
   ],
   "client": [
     "MBDRecipeTypeMixin",
