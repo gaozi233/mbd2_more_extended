@@ -24,6 +24,7 @@ Traits
   - EXACT: the configured value is the slot limit for 64-stack items; other items use floor(x * value / 64).
   - MULTIPLIER: each item's limit is floor(x * value).
   The overstack value can be configured above 64 in the editor. `allowOverstack` can disable the behavior entirely.
+- Fixed GUI mouse input being capped at the item's vanilla stack size even when the overstack trait allowed more.
 
 MBD2 More Extended 1.0.0
 =======================

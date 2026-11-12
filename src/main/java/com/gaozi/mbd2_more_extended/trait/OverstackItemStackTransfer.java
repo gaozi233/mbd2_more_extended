@@ -20,6 +20,13 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
         return definition.getSlotLimit();
     }
 
+    /**
+     * GUI 的 Slot 会用物品自身的 maxStackSize 计算鼠标操作上限，这里给界面提供同一套过载公式。
+     */
+    public int getOverstackLimit(ItemStack stack) {
+        return getStackLimit(0, stack);
+    }
+
     @Override
     protected int getStackLimit(int slot, ItemStack stack) {
         int itemMax = stack.getMaxStackSize();

@@ -12,7 +12,8 @@
     "MBDRecipeTypeMixin",
     "LDLibJEISlotTooltipMixin",
     "TreeListWidgetScrollMixin",
-    "ConfigRecipeLogicSettingsMixin"
+    "ConfigRecipeLogicSettingsMixin",
+    "SlotWidgetItemTransferMaxStackMixin"
   ],
   "server": [],
   "injectors": {
