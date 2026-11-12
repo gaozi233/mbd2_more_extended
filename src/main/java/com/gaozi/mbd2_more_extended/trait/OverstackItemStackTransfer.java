@@ -2,6 +2,8 @@ package com.gaozi.mbd2_more_extended.trait;
 
 import com.lowdragmc.lowdraglib.misc.ItemStackTransfer;
 import com.gaozi.mbd2_more_extended.MBD2MoreExtended;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
@@ -51,6 +53,19 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
                     new Exception("overstack-extract-clear"));
         }
         return result;
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag tag) {
+        ItemStack before = getSlots() > 0 ? super.getStackInSlot(0) : ItemStack.EMPTY;
+        int items = tag.getList("Items", Tag.TAG_COMPOUND).size();
+        if (!before.isEmpty() && before.getCount() > 64 && items == 0) {
+            MBD2MoreExtended.LOGGER.info(
+                    "[overstack-debug] storage deserialize-empty side={} thread={} before={} size={} items={}",
+                    FMLEnvironment.dist, Thread.currentThread().getName(), before.getCount(),
+                    tag.getInt("Size"), items, new Exception("overstack-deserialize-empty"));
+        }
+        super.deserializeNBT(tag);
     }
 
     @Override
