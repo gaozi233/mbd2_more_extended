@@ -10,7 +10,14 @@ Recipe conditions
   adds a `tags` field, tag editor filter, tag-aware matching, JSON/network/NBT serialization and tooltips.
   KubeJS adds `blocksInStructureAny(minCount, maxCount, entries...)`, which accepts block IDs and `#tag` strings.
 - Recipe UI condition slots: an item slot whose id is `@block_condition_<index>` displays the blocks/tags of that
-  condition in a cycle, with the condition tooltip and without becoming a recipe input. JEI Uses is not wired yet.
+  condition in a cycle, with the condition tooltip and without becoming a recipe input.
+
+Editor
+- The editor file/project list now has a visible scrollbar with mouse-wheel and drag support.
+- The machine recipe type selector now supports text filtering by recipe type id.
+- Added the client command `/mbd2_more_extended config`, which opens a client-only settings dialog with independent
+  toggles for the editor enhancements and a separate global master switch. Disabling the master switch greys out the
+  individual toggles but keeps their saved values.
 
 MBD2 More Extended 1.0.0
 =======================
