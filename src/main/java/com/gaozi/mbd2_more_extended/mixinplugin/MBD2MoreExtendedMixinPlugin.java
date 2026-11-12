@@ -1,6 +1,7 @@
 package com.gaozi.mbd2_more_extended.mixinplugin;
 
 import net.minecraftforge.fml.loading.LoadingModList;
+import net.minecraftforge.forgespi.language.IModFileInfo;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -9,14 +10,23 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 仅在 KubeJS 已加载时应用 {@code MBDRecipeJSMixin}。
- *
- * <p>KubeJS 是本模组的可选依赖；如果直接让 Mixin 配置加载 KubeJS 相关
- * Mixin，在没装 KubeJS 的客户端/服务端上可能出现目标类缺失。</p>
+ * 控制依赖其他模组 API 的 Mixin 是否应用。
  */
 public class MBD2MoreExtendedMixinPlugin implements IMixinConfigPlugin {
 
     private static final String KUBEJS_MIXIN = "MBDRecipeJSMixin";
+
+    /**
+     * LDLib 1.0.40 与 1.0.52 的 UI 内部结构不同；这些 Mixin 只针对 1.0.52+ 的 API。
+     */
+    private static final Set<String> LDLIB_052_MIXINS = Set.of(
+            "TreeListWidgetScrollMixin",
+            "SlotWidgetItemTransferMaxStackMixin",
+            "ModularUIContainerMergeMixin",
+            "ModularUIContainerQuickMoveMixin",
+            "SlotWidgetOverstackDisplayMixin",
+            "LDLibJEISlotTooltipMixin"
+    );
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -34,7 +44,62 @@ public class MBD2MoreExtendedMixinPlugin implements IMixinConfigPlugin {
             LoadingModList modList = LoadingModList.get();
             return modList != null && modList.getModFileById("kubejs") != null;
         }
+
+        if (LDLIB_052_MIXINS.stream().anyMatch(mixinClassName::endsWith)) {
+            return isLdLibAtLeast("1.0.52");
+        }
         return true;
+    }
+
+    private static boolean isLdLibAtLeast(String requiredVersion) {
+        LoadingModList modList = LoadingModList.get();
+        if (modList == null) {
+            return false;
+        }
+        IModFileInfo ldlib = modList.getModFileById("ldlib");
+        if (ldlib == null) {
+            return false;
+        }
+        return compareVersions(ldlib.versionString(), requiredVersion) >= 0;
+    }
+
+    private static int compareVersions(String actual, String required) {
+        int[] left = numericParts(actual);
+        int[] right = numericParts(required);
+        int size = Math.max(left.length, right.length);
+        for (int i = 0; i < size; i++) {
+            int a = i < left.length ? left[i] : 0;
+            int b = i < right.length ? right[i] : 0;
+            if (a != b) {
+                return Integer.compare(a, b);
+            }
+        }
+        return 0;
+    }
+
+    private static int[] numericParts(String version) {
+        if (version == null || version.isBlank()) {
+            return new int[0];
+        }
+        String[] parts = version.split("[^0-9]+");
+        int count = 0;
+        for (String part : parts) {
+            if (!part.isEmpty()) {
+                count++;
+            }
+        }
+        int[] result = new int[count];
+        int index = 0;
+        for (String part : parts) {
+            if (!part.isEmpty()) {
+                try {
+                    result[index++] = Integer.parseInt(part);
+                } catch (NumberFormatException ignored) {
+                    return new int[0];
+                }
+            }
+        }
+        return result;
     }
 
     @Override

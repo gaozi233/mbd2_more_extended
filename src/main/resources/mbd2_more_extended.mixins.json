@@ -4,6 +4,7 @@
   "package": "com.gaozi.mbd2_more_extended.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "mbd2_more_extended.refmap.json",
+  "plugin": "com.gaozi.mbd2_more_extended.mixinplugin.MBD2MoreExtendedMixinPlugin",
   "mixins": [
     "RecipeConditionMixin",
     "BlockConditionMixin",
