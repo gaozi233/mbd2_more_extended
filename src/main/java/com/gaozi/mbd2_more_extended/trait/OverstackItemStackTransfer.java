@@ -40,6 +40,20 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
     }
 
     @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate, boolean notify) {
+        ItemStack old = super.getStackInSlot(slot);
+        ItemStack result = super.extractItem(slot, amount, simulate, notify);
+        if (!simulate && !old.isEmpty() && old.getCount() > 64
+                && super.getStackInSlot(slot).isEmpty()) {
+            MBD2MoreExtended.LOGGER.info(
+                    "[overstack-debug] storage extract-clear side={} thread={} slot={} old={} amount={}",
+                    FMLEnvironment.dist, Thread.currentThread().getName(), slot, old.getCount(), amount,
+                    new Exception("overstack-extract-clear"));
+        }
+        return result;
+    }
+
+    @Override
     public ItemStack getStackInSlot(int slot) {
         ItemStack stack = super.getStackInSlot(slot);
         if (!stack.isEmpty() && stack.getCount() > 64) {
