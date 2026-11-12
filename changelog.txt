@@ -26,6 +26,10 @@ Traits
   The overstack value can be configured above 64 in the editor. `allowOverstack` can disable the behavior entirely.
   GUI mouse input and Shift quick-move use the same overstack limit as logistics input.
 
+Fixes
+- Fixed a startup crash in the production build.
+- Fixed missing item tooltips on MBD2 recipe GUI slots.
+
 MBD2 More Extended 1.0.0
 =======================
 
