@@ -1,15 +1,10 @@
 package com.gaozi.mbd2_more_extended.trait;
 
 import com.lowdragmc.lowdraglib.misc.ItemStackTransfer;
-import com.gaozi.mbd2_more_extended.MBD2MoreExtended;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 在允许时让普通 64 堆叠物品超过原版上限。
@@ -17,8 +12,6 @@ import java.util.Set;
 public class OverstackItemStackTransfer extends ItemStackTransfer {
 
     private static final String OVERSTACK_COUNT = "mbd2_overstack_count";
-
-    private static final Set<String> DEBUG_LOGGED = new HashSet<>();
 
     private final OverstackItemSlotTraitDefinition definition;
 
@@ -30,32 +23,6 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
     @Override
     public int getSlotLimit(int slot) {
         return definition.getSlotLimit();
-    }
-
-    @Override
-    public void setStackInSlot(int slot, ItemStack stack) {
-        ItemStack old = super.getStackInSlot(slot);
-        if (!old.isEmpty() && old.getCount() > 64 && stack.isEmpty()) {
-            MBD2MoreExtended.LOGGER.info(
-                    "[overstack-debug] storage clear side={} thread={} slot={} old={}",
-                    FMLEnvironment.dist, Thread.currentThread().getName(), slot, old.getCount(),
-                    new Exception("overstack-clear"));
-        }
-        super.setStackInSlot(slot, stack);
-    }
-
-    @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate, boolean notify) {
-        ItemStack old = super.getStackInSlot(slot);
-        ItemStack result = super.extractItem(slot, amount, simulate, notify);
-        if (!simulate && !old.isEmpty() && old.getCount() > 64
-                && super.getStackInSlot(slot).isEmpty()) {
-            MBD2MoreExtended.LOGGER.info(
-                    "[overstack-debug] storage extract-clear side={} thread={} slot={} old={} amount={}",
-                    FMLEnvironment.dist, Thread.currentThread().getName(), slot, old.getCount(), amount,
-                    new Exception("overstack-extract-clear"));
-        }
-        return result;
     }
 
     @Override
@@ -81,15 +48,6 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        ItemStack before = getSlots() > 0 ? super.getStackInSlot(0) : ItemStack.EMPTY;
-        int items = tag.getList("Items", Tag.TAG_COMPOUND).size();
-        if (!before.isEmpty() && before.getCount() > 64 && items == 0) {
-            MBD2MoreExtended.LOGGER.info(
-                    "[overstack-debug] storage deserialize-empty side={} thread={} before={} size={} items={}",
-                    FMLEnvironment.dist, Thread.currentThread().getName(), before.getCount(),
-                    tag.getInt("Size"), items, new Exception("overstack-deserialize-empty"));
-        }
-
         super.deserializeNBT(tag);
 
         ListTag itemList = tag.getList("Items", Tag.TAG_COMPOUND);
@@ -104,21 +62,6 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
                 }
             }
         }
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        ItemStack stack = super.getStackInSlot(slot);
-        if (!stack.isEmpty() && stack.getCount() > 64) {
-            String key = FMLEnvironment.dist + "|" + slot + "|" + stack.getCount()
-                    + "|" + System.identityHashCode(this);
-            if (DEBUG_LOGGED.add(key)) {
-                MBD2MoreExtended.LOGGER.info(
-                        "[overstack-debug] storage side={} slot={} count={}",
-                        FMLEnvironment.dist, slot, stack.getCount());
-            }
-        }
-        return stack;
     }
 
     /**
