@@ -20,3 +20,5 @@ MBD2 More Extended 是 Multiblocked2 的功能拓展，不新增物品、方块�
 
 - [1.1.0 更新日志](../../changelogs/1.1.0.md)
 - [完整 changelog](../../changelog.txt)
+
+English documentation: [../en_us/index.md](../en_us/index.md)

@@ -52,8 +52,6 @@
 
 ProbeJS 6.0.0 启动时会从 `static.wolfgirl.moe` 下载远程文档。
 
-国内网络环境可能较慢，属于 ProbeJS 行为，不是本模组问题。
-
 ## 已知不兼容
 
 - 不要与 `Multiblocked2 Unofficial` 混用

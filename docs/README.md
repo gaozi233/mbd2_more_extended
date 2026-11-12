@@ -1,14 +1,14 @@
-# MBD2 More Extended 用户文档
+# MBD2 More Extended User Documentation
 
-中文文档：
+English documentation:
 
-- [文档首页](zh_cn/index.md)
-- [安装与依赖](zh_cn/installation.md)
-- [配方条件](zh_cn/recipe-conditions.md)
-- [机器特质](zh_cn/machine-traits.md)
-- [配方能力](zh_cn/recipe-capabilities.md)
-- [KubeJS API](zh_cn/kubejs.md)
-- [编辑器增强](zh_cn/editor.md)
-- [兼容性与限制](zh_cn/compatibility.md)
+- [Documentation index](en_us/index.md)
+- [Installation](en_us/installation.md)
+- [Recipe conditions](en_us/recipe-conditions.md)
+- [Machine traits](en_us/machine-traits.md)
+- [Recipe capabilities](en_us/recipe-capabilities.md)
+- [KubeJS API](en_us/kubejs.md)
+- [Editor enhancements](en_us/editor.md)
+- [Compatibility and limitations](en_us/compatibility.md)
 
-English documentation will be added after the Chinese documentation is reviewed.
+中文文档：[docs/zh_cn/index.md](zh_cn/index.md)

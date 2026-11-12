@@ -1,11 +1,15 @@
 # MBD2 More Extended
 
+[中文](#中文) | [English](#english)
+
+## 中文
+
 MBD2 More Extended 是 [Multiblocked2](https://github.com/Low-Drag-MC/Multiblocked2)（MBD2）的功能拓展模组。
 
 它**不新增任何物品、方块或创造模式标签页**，只通过 MBD2 API 扩展多方块机器的行为。
 
 > 中文用户文档：[docs/zh_cn/index.md](docs/zh_cn/index.md)  
-> English user guide: 待补充（中文审核完成后编写）
+> English user guide: [docs/en_us/index.md](docs/en_us/index.md)
 
 ---
 
@@ -77,3 +81,83 @@ MBD2 More Extended 是 [Multiblocked2](https://github.com/Low-Drag-MC/Multiblock
 ## 许可
 
 All Rights Reserved，详见 [LICENSE.txt](LICENSE.txt)。
+
+---
+
+## English
+
+MBD2 More Extended is a feature add-on for [Multiblocked2](https://github.com/Low-Drag-MC/Multiblocked2) (MBD2).
+
+It adds **no items, blocks or creative tabs** and extends multiblock behavior purely through the MBD2 API.
+
+> English user guide: [docs/en_us/index.md](docs/en_us/index.md)
+
+### Overview
+
+The mod extends MBD2's recipe conditions, machine traits, recipe capabilities and editor:
+
+- **Recipe conditions**: `nbt_compare`, block tags on the built-in `block` condition, `showInGui`, recipe UI condition slots
+- **Machine traits**: Source storage, overstack item slot
+- **Recipe capability**: `ars_source`
+- **KubeJS**: recipe, machine facing/position and customData helpers
+- **Editor enhancements**: file-list scrollbar, recipe type search, client settings dialog
+
+See the [English user guide](docs/en_us/index.md) for full usage, JSON structures and KubeJS examples.
+
+### Requirements
+
+| Item | Requirement |
+|---|---|
+| Minecraft | 1.20.1 |
+| Forge | 47.4.10 |
+| Multiblocked2 | **1.0.37+ (required)** |
+| LDLib | Hard dependency of MBD2 |
+| Ars Nouveau | 4.12+ (optional, source features) |
+| KubeJS | 2001.6.5+ (optional, script API) |
+| JEI | Optional, no version restriction |
+
+### Installation
+
+1. Install Minecraft 1.20.1 + Forge 47.4.10.
+2. Install **Multiblocked2 1.0.37+** and its LDLib dependency.
+3. Optionally install Ars Nouveau (source features) or KubeJS (script API).
+4. Place `mbd2_more_extended-1.1.0.jar` in `mods/`.
+
+### Documentation
+
+| Document | Contents |
+|---|---|
+| [User guide](docs/en_us/index.md) | English documentation index |
+| [Installation](docs/en_us/installation.md) | Client/server installation and dependencies |
+| [Recipe conditions](docs/en_us/recipe-conditions.md) | `nbt_compare`, block tags, `showInGui`, condition slots |
+| [Machine traits](docs/en_us/machine-traits.md) | Source storage, overstack item slot |
+| [Recipe capabilities](docs/en_us/recipe-capabilities.md) | `ars_source` |
+| [KubeJS API](docs/en_us/kubejs.md) | Condition, machine and recipe helpers |
+| [Editor enhancements](docs/en_us/editor.md) | Scrollbar, recipe search, client settings |
+| [Compatibility](docs/en_us/compatibility.md) | Limitations and multiplayer notes |
+
+Version history:
+
+- [1.1.0 changelog](changelogs/1.1.0.md)
+- [Full changelog](changelog.txt)
+
+### Build from source
+
+Requires JDK 17+:
+
+```bash
+./gradlew clean build
+# output: build/libs/mbd2_more_extended-1.1.0.jar
+```
+
+### Links
+
+- Source / issues: <https://github.com/gaozi233/mbd2_more_extended>
+- CurseForge: <https://www.curseforge.com/minecraft/mc-mods/mbd2-more-extended>
+- Changelog: [changelog.txt](changelog.txt)
+- Credits: [CREDITS.txt](CREDITS.txt)
+
+### License
+
+All Rights Reserved. See [LICENSE.txt](LICENSE.txt).
+
