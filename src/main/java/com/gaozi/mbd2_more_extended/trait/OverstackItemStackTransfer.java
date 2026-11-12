@@ -28,6 +28,18 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
     }
 
     @Override
+    public void setStackInSlot(int slot, ItemStack stack) {
+        ItemStack old = super.getStackInSlot(slot);
+        if (!old.isEmpty() && old.getCount() > 64 && stack.isEmpty()) {
+            MBD2MoreExtended.LOGGER.info(
+                    "[overstack-debug] storage clear side={} thread={} slot={} old={}",
+                    FMLEnvironment.dist, Thread.currentThread().getName(), slot, old.getCount(),
+                    new Exception("overstack-clear"));
+        }
+        super.setStackInSlot(slot, stack);
+    }
+
+    @Override
     public ItemStack getStackInSlot(int slot) {
         ItemStack stack = super.getStackInSlot(slot);
         if (!stack.isEmpty() && stack.getCount() > 64) {
