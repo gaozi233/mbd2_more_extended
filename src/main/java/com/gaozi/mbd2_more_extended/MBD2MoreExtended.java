@@ -4,6 +4,7 @@ import com.gaozi.mbd2_more_extended.capability.SourceRecipeCapability;
 import com.gaozi.mbd2_more_extended.client.MBD2MoreExtendedClient;
 import com.gaozi.mbd2_more_extended.config.MBD2MoreExtendedClientConfig;
 import com.gaozi.mbd2_more_extended.recipe.NBTCompareCondition;
+import com.gaozi.mbd2_more_extended.trait.OverstackItemSlotTraitDefinition;
 import com.gaozi.mbd2_more_extended.trait.SourceTraitDefinition;
 import com.lowdragmc.mbd2.common.event.MBDRegistryEvent;
 import com.mojang.logging.LogUtils;
@@ -67,6 +68,8 @@ public class MBD2MoreExtended
             event.register(SourceTraitDefinition.class);
             LOGGER.info("Registered Ars Nouveau source trait type 'ars_source_storage'");
         }
+        event.register(OverstackItemSlotTraitDefinition.class);
+        LOGGER.info("Registered overstack item slot trait type 'overstack_item_slot'");
     }
 
     /**

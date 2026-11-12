@@ -19,6 +19,11 @@ Editor
   toggles for the editor enhancements and a separate global master switch. Disabling the master switch greys out the
   individual toggles but keeps their saved values.
 
+Traits
+- Added the `overstack_item_slot` machine trait. With `allowOverstack` enabled, normal stackable items can exceed
+  their vanilla max stack size up to the trait's slot limit. Tools, potions and other low-stack items keep their
+  normal limit. The slot limit is configured on the trait; the default is still 64.
+
 MBD2 More Extended 1.0.0
 =======================
 

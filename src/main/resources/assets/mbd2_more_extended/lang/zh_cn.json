@@ -22,6 +22,10 @@
   "config.definition.trait.ars_source_storage.io.tooltip": "IN：只接收魔源；OUT：只输出魔源（仪式可抽取，并向附近目标推送）；BOTH：类似魔源罐，可接收也可被抽取，不主动推送。",
   "config.definition.trait.ars_source_storage.ui_hover": "魔源：%s / %s",
 
+  "config.definition.trait.overstack_item_slot.name": "过载物品槽",
+  "config.definition.trait.overstack_item_slot.allow_overstack": "允许突破堆叠上限",
+  "config.definition.trait.overstack_item_slot.allow_overstack.tooltip": "允许可堆叠物品超过原版最大堆叠数，最多达到槽位上限。工具、药水等低堆叠物品仍保持原上限。",
+
   "recipe.capability.ars_source.name": "魔源",
   "recipe.capability.ars_source.amount": "魔源数量",
   "recipe.capability.ars_source.error": "需要 %s 魔源"

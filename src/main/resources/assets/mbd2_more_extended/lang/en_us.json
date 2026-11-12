@@ -22,6 +22,10 @@
   "config.definition.trait.ars_source_storage.io.tooltip": "IN: only receive source. OUT: only output source (rituals can take, and it pushes to nearby targets). BOTH: like a source jar, accepts and can be drained, no active push.",
   "config.definition.trait.ars_source_storage.ui_hover": "Source: %s / %s",
 
+  "config.definition.trait.overstack_item_slot.name": "Overstack Item Slot",
+  "config.definition.trait.overstack_item_slot.allow_overstack": "Allow Overstack",
+  "config.definition.trait.overstack_item_slot.allow_overstack.tooltip": "Allows stackable items to exceed their normal max stack size up to the configured slot limit. Tools and low-stack items keep their normal limit.",
+
   "recipe.capability.ars_source.name": "Source",
   "recipe.capability.ars_source.amount": "Source Amount",
   "recipe.capability.ars_source.error": "Requires %s source"
