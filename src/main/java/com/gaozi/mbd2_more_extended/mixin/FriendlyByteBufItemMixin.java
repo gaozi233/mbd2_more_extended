@@ -1,5 +1,6 @@
 package com.gaozi.mbd2_more_extended.mixin;
 
+import com.gaozi.mbd2_more_extended.MBD2MoreExtended;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,6 +13,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 让原版物品网络编码支持超过 127 的堆叠。
  *
@@ -22,10 +26,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = FriendlyByteBuf.class, remap = false)
 public abstract class FriendlyByteBufItemMixin {
 
+    private static final Set<String> DEBUG_LOGGED = new HashSet<>();
+
     @Inject(method = "writeItem", at = @At("HEAD"), cancellable = true, remap = false)
     private void mbd2$writeOverstackItem(ItemStack stack,
                                          CallbackInfoReturnable<FriendlyByteBuf> cir) {
         if (!stack.isEmpty() && stack.getCount() > Byte.MAX_VALUE) {
+            if (DEBUG_LOGGED.add("write|" + stack.getCount())) {
+                MBD2MoreExtended.LOGGER.info("[overstack-debug] network write count={}", stack.getCount());
+            }
             FriendlyByteBuf buf = (FriendlyByteBuf) (Object) this;
             // 原版格式：非空标记 + 物品 id + byte 数量 + NBT。
             // 用 AIR 作为哨兵，真正的 ItemStack 放在 NBT 中。
@@ -55,6 +64,9 @@ public abstract class FriendlyByteBufItemMixin {
         if (item == Items.AIR && tag != null) {
             ItemStack overstack = ItemStack.of(tag);
             if (!overstack.isEmpty()) {
+                if (DEBUG_LOGGED.add("read|" + overstack.getCount())) {
+                    MBD2MoreExtended.LOGGER.info("[overstack-debug] network read count={}", overstack.getCount());
+                }
                 return overstack;
             }
         }

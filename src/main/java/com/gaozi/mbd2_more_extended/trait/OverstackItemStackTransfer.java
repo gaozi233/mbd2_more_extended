@@ -1,12 +1,19 @@
 package com.gaozi.mbd2_more_extended.trait;
 
 import com.lowdragmc.lowdraglib.misc.ItemStackTransfer;
+import com.gaozi.mbd2_more_extended.MBD2MoreExtended;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 在允许时让普通 64 堆叠物品超过原版上限。
  */
 public class OverstackItemStackTransfer extends ItemStackTransfer {
+
+    private static final Set<String> DEBUG_LOGGED = new HashSet<>();
 
     private final OverstackItemSlotTraitDefinition definition;
 
@@ -18,6 +25,21 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
     @Override
     public int getSlotLimit(int slot) {
         return definition.getSlotLimit();
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        ItemStack stack = super.getStackInSlot(slot);
+        if (!stack.isEmpty() && stack.getCount() > 64) {
+            String key = FMLEnvironment.dist + "|" + slot + "|" + stack.getCount()
+                    + "|" + System.identityHashCode(this);
+            if (DEBUG_LOGGED.add(key)) {
+                MBD2MoreExtended.LOGGER.info(
+                        "[overstack-debug] storage side={} slot={} count={}",
+                        FMLEnvironment.dist, slot, stack.getCount());
+            }
+        }
+        return stack;
     }
 
     /**

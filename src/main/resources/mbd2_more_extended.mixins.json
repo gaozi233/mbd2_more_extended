@@ -16,7 +16,8 @@
     "MBDRecipeTypeMixin",
     "LDLibJEISlotTooltipMixin",
     "TreeListWidgetScrollMixin",
-    "ConfigRecipeLogicSettingsMixin"
+    "ConfigRecipeLogicSettingsMixin",
+    "SlotWidgetOverstackDebugMixin"
   ],
   "server": [],
   "injectors": {
