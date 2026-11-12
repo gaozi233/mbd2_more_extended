@@ -36,7 +36,7 @@ public abstract class SlotWidgetOverstackDebugMixin {
             String handlerInfo = "none";
             if (slot instanceof SlotWidget.WidgetSlotItemTransfer transfer) {
                 IItemTransfer handler = transfer.getItemHandler();
-                ItemStack handlerStack = handler.getStackInSlot(0);
+                ItemStack handlerStack = handler.getStackInSlot(slot.getSlotIndex());
                 handlerInfo = handler.getClass().getSimpleName()
                         + "@" + System.identityHashCode(handler)
                         + ":" + handlerStack.getCount();
@@ -61,7 +61,7 @@ public abstract class SlotWidgetOverstackDebugMixin {
         Slot slot = self.getHandler();
         if (slot instanceof SlotWidget.WidgetSlotItemTransfer transfer) {
             IItemTransfer handler = transfer.getItemHandler();
-            ItemStack stored = handler.getStackInSlot(slot.index);
+            ItemStack stored = handler.getStackInSlot(slot.getSlotIndex());
             if (!stored.isEmpty() && stored.getCount() > 64) {
                 if (DEBUG_LOGGED.add("fallback|" + self.getId() + "|" + stored.getCount())) {
                     MBD2MoreExtended.LOGGER.info(
