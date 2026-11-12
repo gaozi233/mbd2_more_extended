@@ -24,7 +24,11 @@
 
   "config.definition.trait.overstack_item_slot.name": "Overstack Item Slot",
   "config.definition.trait.overstack_item_slot.allow_overstack": "Allow Overstack",
-  "config.definition.trait.overstack_item_slot.allow_overstack.tooltip": "Allows stackable items to exceed their normal max stack size up to the configured slot limit. Tools and low-stack items keep their normal limit.",
+  "config.definition.trait.overstack_item_slot.allow_overstack.tooltip": "Allows stackable items to exceed their normal max stack size according to the selected overstack mode.",
+  "config.definition.trait.overstack_item_slot.slot_limit": "Overstack Value",
+  "config.definition.trait.overstack_item_slot.slot_limit.tooltip": "EXACT: the value is the slot limit for 64-stack items; other items use floor(x * value / 64). MULTIPLIER: each item's limit is floor(x * value).",
+  "config.definition.trait.overstack_item_slot.mode": "Overstack Mode",
+  "config.definition.trait.overstack_item_slot.mode.tooltip": "EXACT uses the value as the 64-stack limit and scales other items proportionally. MULTIPLIER uses the value as a direct multiplier.",
 
   "recipe.capability.ars_source.name": "Source",
   "recipe.capability.ars_source.amount": "Source Amount",

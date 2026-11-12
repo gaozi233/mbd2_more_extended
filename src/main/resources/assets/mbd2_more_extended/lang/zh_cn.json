@@ -24,7 +24,11 @@
 
   "config.definition.trait.overstack_item_slot.name": "过载物品槽",
   "config.definition.trait.overstack_item_slot.allow_overstack": "允许突破堆叠上限",
-  "config.definition.trait.overstack_item_slot.allow_overstack.tooltip": "允许可堆叠物品超过原版最大堆叠数，最多达到槽位上限。工具、药水等低堆叠物品仍保持原上限。",
+  "config.definition.trait.overstack_item_slot.allow_overstack.tooltip": "允许可堆叠物品按所选过载模式超过原版最大堆叠数。",
+  "config.definition.trait.overstack_item_slot.slot_limit": "过载数值",
+  "config.definition.trait.overstack_item_slot.slot_limit.tooltip": "精确模式：数值是 64 堆叠物品的上限，其他物品按 floor(x * 数值 / 64) 计算；倍数模式：每个物品上限为 floor(x * 数值)。",
+  "config.definition.trait.overstack_item_slot.mode": "过载模式",
+  "config.definition.trait.overstack_item_slot.mode.tooltip": "精确模式：数值作为 64 堆叠物品上限，其他物品按比例缩放；倍数模式：数值作为直接倍数。",
 
   "recipe.capability.ars_source.name": "魔源",
   "recipe.capability.ars_source.amount": "魔源数量",
