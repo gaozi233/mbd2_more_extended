@@ -6,14 +6,16 @@
   "refmap": "mbd2_more_extended.refmap.json",
   "mixins": [
     "RecipeConditionMixin",
-    "BlockConditionMixin"
+    "BlockConditionMixin",
+    "SlotWidgetItemTransferMaxStackMixin",
+    "ModularUIContainerMergeMixin",
+    "ModularUIContainerQuickMoveMixin"
   ],
   "client": [
     "MBDRecipeTypeMixin",
     "LDLibJEISlotTooltipMixin",
     "TreeListWidgetScrollMixin",
-    "ConfigRecipeLogicSettingsMixin",
-    "SlotWidgetItemTransferMaxStackMixin"
+    "ConfigRecipeLogicSettingsMixin"
   ],
   "server": [],
   "injectors": {
