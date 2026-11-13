@@ -17,9 +17,9 @@ public class MBD2MoreExtendedMixinPlugin implements IMixinConfigPlugin {
     private static final String KUBEJS_MIXIN = "MBDRecipeJSMixin";
 
     /**
-     * LDLib 1.0.40 与 1.0.52 的 UI 内部结构不同；这些 Mixin 只针对 1.0.52+ 的 API。
+     * These Mixins support LDLib 1.0.40+ with dual official/SRG target names.
      */
-    private static final Set<String> LDLIB_052_MIXINS = Set.of(
+    private static final Set<String> LDLIB_040_MIXINS = Set.of(
             "TreeListWidgetScrollMixin",
             "SlotWidgetItemTransferMaxStackMixin",
             "ModularUIContainerMergeMixin",
@@ -45,8 +45,8 @@ public class MBD2MoreExtendedMixinPlugin implements IMixinConfigPlugin {
             return modList != null && modList.getModFileById("kubejs") != null;
         }
 
-        if (LDLIB_052_MIXINS.stream().anyMatch(mixinClassName::endsWith)) {
-            return isLdLibAtLeast("1.0.52");
+        if (LDLIB_040_MIXINS.stream().anyMatch(mixinClassName::endsWith)) {
+            return isLdLibAtLeast("1.0.40");
         }
         return true;
     }

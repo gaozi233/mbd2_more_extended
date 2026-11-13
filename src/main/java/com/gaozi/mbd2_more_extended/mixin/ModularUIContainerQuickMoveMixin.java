@@ -24,7 +24,7 @@ public abstract class ModularUIContainerQuickMoveMixin {
     @Unique
     private static final ThreadLocal<Integer> MBD2_SOURCE_LIMIT = new ThreadLocal<>();
 
-    @Inject(method = "quickMoveStack", at = @At("HEAD"), remap = false)
+    @Inject(method = {"quickMoveStack", "m_7648_"}, at = @At("HEAD"), require = 1, remap = false)
     private void mbd2$captureSourceLimit(Player player, int index,
                                         CallbackInfoReturnable<ItemStack> cir) {
         Slot slot = ((AbstractContainerMenu) (Object) this).slots.get(index);
@@ -32,15 +32,16 @@ public abstract class ModularUIContainerQuickMoveMixin {
         MBD2_SOURCE_LIMIT.set(Math.max(stack.getMaxStackSize(), slot.getMaxStackSize(stack)));
     }
 
-    @Inject(method = "quickMoveStack", at = @At("RETURN"), remap = false)
+    @Inject(method = {"quickMoveStack", "m_7648_"}, at = @At("RETURN"), require = 1, remap = false)
     private void mbd2$clearSourceLimit(Player player, int index,
                                        CallbackInfoReturnable<ItemStack> cir) {
         MBD2_SOURCE_LIMIT.remove();
     }
 
     @Redirect(
-            method = "quickMoveStack",
+            method = {"quickMoveStack", "m_7648_"},
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getMaxStackSize()I"),
+            require = 1,
             remap = false
     )
     private int mbd2$useSourceSlotLimit(ItemStack stack) {

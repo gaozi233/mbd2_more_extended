@@ -26,9 +26,13 @@ public abstract class SlotWidgetItemTransferMaxStackMixin {
     private IItemTransfer itemHandler;
 
     @Inject(
-            method = "getMaxStackSize(Lnet/minecraft/world/item/ItemStack;)I",
+            method = {
+                    "getMaxStackSize(Lnet/minecraft/world/item/ItemStack;)I",
+                    "m_5866_(Lnet/minecraft/world/item/ItemStack;)I"
+            },
             at = @At("HEAD"),
             cancellable = true,
+            require = 1,
             remap = false
     )
     private void mbd2$useOverstackLimit(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
