@@ -22,7 +22,16 @@ public class OverstackItemStackTransfer extends ItemStackTransfer {
 
     @Override
     public int getSlotLimit(int slot) {
-        return definition.getSlotLimit();
+        int value = definition.getSlotLimit();
+        if (definition.isAllowOverstack()
+                && definition.getMode() == OverstackItemSlotTraitDefinition.OverstackMode.MULTIPLIER) {
+            // IItemTransfer.getSlotLimit has no stack argument. External handlers
+            // (hoppers, pipes) use it as the absolute slot capacity, so report
+            // the effective 64-stack limit instead of the raw multiplier.
+            long effective = (long) value * 64L;
+            return (int) Math.min(Integer.MAX_VALUE, Math.max(0L, effective));
+        }
+        return value;
     }
 
     @Override
