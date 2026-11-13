@@ -41,10 +41,28 @@ public abstract class ModularUIContainerQuickMoveMixin {
     @Redirect(
             method = {"quickMoveStack", "m_7648_"},
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getMaxStackSize()I"),
-            require = 1,
+            require = 0,
             remap = false
     )
     private int mbd2$useSourceSlotLimit(ItemStack stack) {
+        return mbd2$sourceLimit(stack);
+    }
+
+    /**
+     * Production LDLib calls the SRG name of ItemStack.getMaxStackSize().
+     */
+    @Redirect(
+            method = {"quickMoveStack", "m_7648_"},
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;m_41741_()I"),
+            require = 0,
+            remap = false
+    )
+    private int mbd2$useSourceSlotLimitSrg(ItemStack stack) {
+        return mbd2$sourceLimit(stack);
+    }
+
+    @Unique
+    private int mbd2$sourceLimit(ItemStack stack) {
         Integer limit = MBD2_SOURCE_LIMIT.get();
         return limit == null ? stack.getMaxStackSize() : Math.max(stack.getMaxStackSize(), limit);
     }
